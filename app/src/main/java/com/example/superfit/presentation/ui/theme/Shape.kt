@@ -1,4 +1,4 @@
-package com.example.superfit.ui.theme
+package com.example.superfit.presentation.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

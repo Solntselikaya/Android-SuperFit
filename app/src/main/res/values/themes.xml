@@ -2,6 +2,11 @@
 <resources>
 
     <style name="Theme.SuperFit" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+    </style>
+
+    <style name="splashScreenTheme" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="android:statusBarColor">@color/transparent</item>
     </style>
 </resources>

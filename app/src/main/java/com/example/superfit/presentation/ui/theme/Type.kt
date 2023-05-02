@@ -1,4 +1,4 @@
-package com.example.superfit.ui.theme
+package com.example.superfit.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

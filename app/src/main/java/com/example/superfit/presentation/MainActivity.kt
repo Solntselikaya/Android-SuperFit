@@ -1,4 +1,4 @@
-package com.example.superfit
+package com.example.superfit.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,11 +10,18 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.superfit.ui.theme.SuperFitTheme
+import androidx.core.view.WindowCompat
+import com.example.superfit.R
+import com.example.superfit.presentation.ui.theme.SuperFitTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_SuperFit)
+        WindowCompat.setDecorFitsSystemWindows(
+            window,
+            false
+        )
         setContent {
             SuperFitTheme {
                 // A surface container using the 'background' color from the theme
