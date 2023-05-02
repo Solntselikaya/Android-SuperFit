@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
 import com.example.superfit.R
 import com.example.superfit.presentation.authorization.AuthorizationScreen
+import com.example.superfit.presentation.registration.RegistrationScreen
 import com.example.superfit.presentation.ui.theme.SuperFitTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             SuperFitTheme {
-                AuthorizationScreen()
+                RegistrationScreen()
             }
         }
     }
