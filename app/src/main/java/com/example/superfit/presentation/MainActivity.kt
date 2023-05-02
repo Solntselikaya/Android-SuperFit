@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import com.example.superfit.R
+import com.example.superfit.presentation.registration.RegistrationScreen
 import com.example.superfit.presentation.ui.theme.SuperFitTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,12 +25,7 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             SuperFitTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                RegistrationScreen()
             }
         }
     }

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">SuperFit</string>
+    <string name="super_fit">SuperFit</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="user_name_input">UserName</string>
+    <string name="sign_in">Sign In</string>
+    <string name="email_input">Email</string>
+    <string name="code_input">Code</string>
+    <string name="repeat_code_input">RepeatCode</string>
 </resources>
