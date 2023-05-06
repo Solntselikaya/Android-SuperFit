@@ -1,9 +1,9 @@
 package com.example.superfit.domain.repository
 
-import com.example.superfit.data.remote.dto.BodyParametersDto
-import com.example.superfit.data.remote.dto.MessageDto
-import com.example.superfit.data.remote.dto.ProfileInfoDto
-import com.example.superfit.data.remote.dto.ProfilePhotoDto
+import com.example.superfit.data.dto.BodyParametersDto
+import com.example.superfit.data.dto.MessageDto
+import com.example.superfit.data.dto.ProfileInfoDto
+import com.example.superfit.data.dto.ProfilePhotoDto
 import okhttp3.MultipartBody
 
 interface ProfileRepository {

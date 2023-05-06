@@ -1,7 +1,7 @@
 package com.example.superfit.data.repository
 
-import com.example.superfit.data.remote.AuthApi
-import com.example.superfit.data.remote.dto.*
+import com.example.superfit.data.dto.*
+import com.example.superfit.data.api.AuthApi
 import com.example.superfit.domain.repository.AuthRepository
 
 class AuthRepositoryImpl(

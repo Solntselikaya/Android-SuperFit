@@ -5,13 +5,13 @@ import com.example.superfit.common.Constants.CONNECT_TIMEOUT
 import com.example.superfit.common.Constants.READ_TIMEOUT
 import com.example.superfit.common.Constants.WRITE_TIMEOUT
 import com.example.superfit.data.Interceptor
-import com.example.superfit.data.remote.TrainingApi
+import com.example.superfit.data.api.TrainingApi
 import com.example.superfit.data.repository.TrainingRepositoryImpl
-import com.example.superfit.domain.usecase.repository.TrainingRepository
-import com.example.superfit.data.remote.ProfileApi
+import com.example.superfit.domain.repository.TrainingRepository
+import com.example.superfit.data.api.ProfileApi
 import com.example.superfit.data.repository.ProfileRepositoryImpl
 import com.example.superfit.domain.repository.ProfileRepository
-import com.example.superfit.data.remote.AuthApi
+import com.example.superfit.data.api.AuthApi
 import com.example.superfit.data.repository.AuthRepositoryImpl
 import com.example.superfit.domain.repository.AuthRepository
 import okhttp3.OkHttpClient

@@ -1,6 +1,6 @@
-package com.example.superfit.data.remote
+package com.example.superfit.data.api
 
-import com.example.superfit.data.remote.dto.TrainingDto
+import com.example.superfit.data.dto.TrainingDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

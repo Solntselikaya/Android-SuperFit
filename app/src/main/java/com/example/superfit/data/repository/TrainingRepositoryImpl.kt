@@ -1,8 +1,8 @@
 package com.example.superfit.data.repository
 
-import com.example.superfit.data.remote.TrainingApi
-import com.example.superfit.data.remote.dto.TrainingDto
-import com.example.superfit.domain.usecase.repository.TrainingRepository
+import com.example.superfit.data.api.TrainingApi
+import com.example.superfit.data.dto.TrainingDto
+import com.example.superfit.domain.repository.TrainingRepository
 
 class TrainingRepositoryImpl(
     private val api: TrainingApi

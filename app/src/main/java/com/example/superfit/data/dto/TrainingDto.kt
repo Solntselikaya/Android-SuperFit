@@ -1,4 +1,4 @@
-package com.example.superfit.data.remote.dto
+package com.example.superfit.data.dto
 
 data class TrainingDto(
     val date: String,

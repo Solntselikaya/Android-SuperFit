@@ -1,6 +1,6 @@
-package com.example.superfit.domain.usecase.repository
+package com.example.superfit.domain.repository
 
-import com.example.superfit.data.remote.dto.TrainingDto
+import com.example.superfit.data.dto.TrainingDto
 
 interface TrainingRepository {
 

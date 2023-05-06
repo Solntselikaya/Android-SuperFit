@@ -1,9 +1,9 @@
-package com.example.superfit.data.remote
+package com.example.superfit.data.api
 
-import com.example.superfit.data.remote.dto.BodyParametersDto
-import com.example.superfit.data.remote.dto.MessageDto
-import com.example.superfit.data.remote.dto.ProfileInfoDto
-import com.example.superfit.data.remote.dto.ProfilePhotoDto
+import com.example.superfit.data.dto.BodyParametersDto
+import com.example.superfit.data.dto.MessageDto
+import com.example.superfit.data.dto.ProfileInfoDto
+import com.example.superfit.data.dto.ProfilePhotoDto
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
