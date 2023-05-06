@@ -3,39 +3,76 @@ package com.example.superfit.presentation.registration
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.superfit.R
+import com.example.superfit.navigation.Screen
+import com.example.superfit.presentation.common.AppTitle
 import com.example.superfit.presentation.common.InputField
 import com.example.superfit.presentation.ui.theme.White
+import com.example.superfit.presentation.registration.RegistrationEvent.*
+import com.example.superfit.presentation.ui.theme.Black
 
 @Composable
-fun RegistrationScreen() {
-    Box(
+fun RegistrationScreen(
+    navController: NavController,
+    viewModel: RegistrationViewModel = viewModel()
+) {
+    val state: RegistrationState by remember {viewModel.state }
+    val error: List<Int> by remember { viewModel.errorMessage }
+
+    if (error.isNotEmpty()) {
+        
+        AlertDialog(
+            onDismissRequest = { viewModel.accept(OnDialogDismiss) },
+            title = { Text(text = "Ошибка") },
+            text = {
+                var errorStr = ""
+                for (element in error) {
+                    errorStr += stringResource(element)
+                    errorStr += "\n"
+                }
+                
+                Text(text = errorStr, color = Black)
+            },
+            buttons = {}
+        )
+    }
+
+
+    Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = stringResource(R.string.super_fit),
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 68.dp),
-            style = MaterialTheme.typography.h2,
-            color = White
+        AppTitle()
+
+        InputFields(
+            userName = (state as RegistrationState.InputInfo).data.userName ?: "",
+            email = (state as RegistrationState.InputInfo).data.email ?: "",
+            code = (state as RegistrationState.InputInfo).data.code ?: "",
+            repeatCode = (state as RegistrationState.InputInfo).data.repeatCode ?: "",
+            { viewModel.accept(InputInfo(it)) },
+            { viewModel.accept(SignUpButtonClick(navController)) }
         )
 
-        InputFields(modifier = Modifier.align(Alignment.Center))
-
         TextButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                navController.popBackStack(Screen.AuthorizationScreen.route, false)
+            },
             modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .wrapContentSize()
-                .padding(bottom = 56.dp),
+                .padding(bottom = 56.dp)
+                .wrapContentSize(),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Transparent,
                 contentColor = White
@@ -58,7 +95,13 @@ fun RegistrationScreen() {
 
 @Composable
 fun InputFields(
-    modifier: Modifier
+    userName: String,
+    email: String,
+    code: String,
+    repeatCode: String,
+    onValueChanged: (RegisterBody) -> Unit,
+    onSignUpButtonClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -67,31 +110,34 @@ fun InputFields(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         InputField(
-            value = "",
+            value = userName,
             placeHolderText = stringResource(R.string.user_name_input),
-            onValueChanged = { /*TODO*/ }
+            onValueChanged = { onValueChanged(RegisterBody(userName = it)) }
         )
 
         InputField(
-            value = "",
+            value = email,
             placeHolderText = stringResource(R.string.email_input),
-            onValueChanged = { /*TODO*/ }
+            keyBoardType = KeyboardType.Email,
+            onValueChanged = { onValueChanged(RegisterBody(email = it)) }
         )
 
         InputField(
-            value = "",
+            value = code,
             placeHolderText = stringResource(R.string.code_input),
-            onValueChanged = { /*TODO*/ }
+            keyBoardType = KeyboardType.Decimal,
+            onValueChanged = { onValueChanged(RegisterBody(code = it)) }
         )
 
         InputField(
-            value = "",
+            value = repeatCode,
             placeHolderText = stringResource(R.string.repeat_code_input),
-            onValueChanged = { /*TODO*/ }
+            keyBoardType = KeyboardType.Decimal,
+            onValueChanged = { onValueChanged(RegisterBody(repeatCode = it)) }
         )
 
         TextButton(
-            onClick = { /*TODO*/ },
+            onClick = onSignUpButtonClick,
             modifier = modifier
                 .wrapContentSize()
                 .padding(top = 40.dp, bottom = 56.dp),

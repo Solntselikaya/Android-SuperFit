@@ -7,4 +7,9 @@
     <string name="email_input">Email</string>
     <string name="code_input">Code</string>
     <string name="repeat_code_input">RepeatCode</string>
+
+    <string name="email_error_message">Некорректный e-mail</string>
+    <string name="code_error_message">Код не должен содержать нули</string>
+    <string name="code_length_error_message">Код должен быть длиной 4 символа</string>
+    <string name="code_repeat_error_message">Введенные коды не совпадают</string>
 </resources>

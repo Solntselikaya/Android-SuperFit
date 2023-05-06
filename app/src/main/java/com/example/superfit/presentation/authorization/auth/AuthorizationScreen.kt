@@ -1,39 +1,51 @@
-package com.example.superfit.presentation.authorization
+package com.example.superfit.presentation.authorization.auth
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.superfit.R
+import com.example.superfit.presentation.authorization.auth.AuthorizationEvent.*
+import com.example.superfit.presentation.common.AppTitle
 import com.example.superfit.presentation.common.InputField
 import com.example.superfit.presentation.ui.theme.Transparent
 import com.example.superfit.presentation.ui.theme.White
 
-@Preview(showBackground = true)
 @Composable
-fun AuthorizationScreen() {
+fun AuthorizationScreen(
+    navController: NavController,
+    viewModel: AuthorizationViewModel = viewModel()
+) {
+    val state: AuthorizationState by remember { viewModel.state }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Text(
-            text = stringResource(R.string.super_fit),
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 68.dp),
-            style = MaterialTheme.typography.h2,
-            color = White
-        )
+        AppTitle(Modifier.align(Alignment.TopCenter))
 
-        UserNameInput(modifier = Modifier.align(Alignment.Center))
+        when(state) {
+            is AuthorizationState.InputUserName -> {
+                UserNameInput(
+                    modifier = Modifier.align(Alignment.Center),
+                    value = (state as AuthorizationState.InputUserName).userName,
+                    { viewModel.accept(SignInButtonClick(navController, it)) }
+                ) { viewModel.accept(InputUserName(it)) }
+            }
+        }
 
         TextButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                viewModel.accept(SignUpButtonClick(navController))
+            },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .wrapContentSize()
@@ -50,30 +62,35 @@ fun AuthorizationScreen() {
                 color = White
             )
             Icon(
-                painter = painterResource(R.drawable.arrow_forward),
+                painter = painterResource(R.drawable.arrow_right),
                 contentDescription = null,
                 tint = White
             )
         }
     }
+
 }
 
 @Composable
 fun UserNameInput(
-    modifier: Modifier
+    modifier: Modifier,
+    value: String,
+    onSignUpButtonClick: (String) -> Unit,
+    onValueChanged: (String) -> Unit
 ) {
     Column(
         modifier = modifier
             .wrapContentSize()
     ) {
         InputField(
-            value = "",
+            value = value,
             placeHolderText = stringResource(R.string.user_name_input),
-            onValueChanged = { /*TODO*/ }
+            onValueChanged = { onValueChanged(it) }
         )
 
         TextButton(
-            onClick = { /*TODO*/ }
+            onClick = { onSignUpButtonClick(value) },
+            modifier = Modifier.padding(start = 50.dp)
         ) {
             Text(
                 text = stringResource(R.string.sign_in),
@@ -82,7 +99,7 @@ fun UserNameInput(
                 color = White
             )
             Icon(
-                painter = painterResource(R.drawable.arrow_forward),
+                painter = painterResource(R.drawable.arrow_right),
                 contentDescription = null,
                 tint = White
             )
