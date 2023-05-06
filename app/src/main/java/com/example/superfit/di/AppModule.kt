@@ -5,6 +5,9 @@ import com.example.superfit.common.Constants.CONNECT_TIMEOUT
 import com.example.superfit.common.Constants.READ_TIMEOUT
 import com.example.superfit.common.Constants.WRITE_TIMEOUT
 import com.example.superfit.data.Interceptor
+import com.example.superfit.data.remote.ProfileApi
+import com.example.superfit.data.repository.ProfileRepositoryImpl
+import com.example.superfit.domain.repository.ProfileRepository
 import com.example.superfit.data.remote.AuthApi
 import com.example.superfit.data.repository.AuthRepositoryImpl
 import com.example.superfit.domain.repository.AuthRepository
@@ -38,6 +41,19 @@ val appModule = module {
 
     single<AuthRepository> {
         AuthRepositoryImpl(get())
+    }
+
+    single {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client.build())
+            .build()
+            .create(ProfileApi::class.java)
+    }
+
+    single<ProfileRepository> {
+        ProfileRepositoryImpl(get())
     }
 
 }
