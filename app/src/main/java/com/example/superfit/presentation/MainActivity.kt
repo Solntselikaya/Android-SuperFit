@@ -4,8 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
+import androidx.navigation.compose.rememberNavController
 import com.example.superfit.R
-import com.example.superfit.presentation.authorization.AuthorizationScreen
+import com.example.superfit.navigation.Navigation
 import com.example.superfit.presentation.ui.theme.SuperFitTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +19,8 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             SuperFitTheme {
-                AuthorizationScreen()
+                val navController = rememberNavController()
+                Navigation(navController)
             }
         }
     }
