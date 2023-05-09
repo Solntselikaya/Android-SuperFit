@@ -12,4 +12,15 @@
     <string name="code_error_message">Код не должен содержать нули</string>
     <string name="code_length_error_message">Код должен быть длиной 4 символа</string>
     <string name="code_repeat_error_message">Введенные коды не совпадают</string>
+    <string name="my_body">My body</string>
+    <string name="last_exercises">Last exercises</string>
+    <string name="see_all">See all</string>
+    <string name="push_ups">Push-Ups</string>
+    <string name="push_ups_description">Push-ups exercise the pectoral muscles, triceps, and anterior deltoids.</string>
+
+    <string name="my_weight">%1$i kg</string>
+    <string name="my_height">%1$i cm</string>
+
+    <string name="undefined">Undefined</string>
+    <string name="details">Details</string>
 </resources>
