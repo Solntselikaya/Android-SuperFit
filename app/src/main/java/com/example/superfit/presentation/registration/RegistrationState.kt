@@ -1,7 +1,7 @@
 package com.example.superfit.presentation.registration
 
-sealed interface RegistrationState {
+sealed class RegistrationState {
     class InputInfo(
         val data: RegisterBody
-    ) : RegistrationState
+    ) : RegistrationState()
 }
