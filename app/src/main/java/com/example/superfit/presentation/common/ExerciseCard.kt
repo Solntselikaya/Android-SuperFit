@@ -29,7 +29,8 @@ import com.example.superfit.presentation.ui.theme.White
 fun ExerciseCard(
     image: Painter,
     name: String,
-    description: String
+    description: String,
+    onClick: () -> Unit
 ) {
     Row(
         Modifier
@@ -38,9 +39,7 @@ fun ExerciseCard(
             .wrapContentHeight()
             .clip(RoundedCornerShape(8.dp))
             .background(DarkGray)
-            .clickable {
-
-            }
+            .clickable { onClick() }
     ) {
         Image(
             painter = image,
@@ -93,5 +92,5 @@ fun ExerciseCardPreview() {
         image = painterResource(R.drawable.push_ups_image),
         name = stringResource(R.string.push_ups),
         description = stringResource(R.string.push_ups_description)
-    )
+    ) {}
 }

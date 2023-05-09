@@ -27,7 +27,8 @@ import com.example.superfit.presentation.ui.theme.Transparent
 @Composable
 fun MyBodyCard(
     weight: Int? = null,
-    height: Int? = null
+    height: Int? = null,
+    onClick: () -> Unit
 ) {
 
     val myWeight = if (weight != null) {
@@ -49,9 +50,7 @@ fun MyBodyCard(
             .height(IntrinsicSize.Min)
             .clip(RoundedCornerShape(8.dp))
             .background(DarkGray)
-            .clickable {
-
-            }
+            .clickable { onClick() }
     ) {
         Image(
             painter = painterResource(R.drawable.my_body_image),
@@ -108,5 +107,5 @@ fun MyBodyCard(
 @Preview(showBackground = true)
 @Composable
 fun MyBodyCardPreview() {
-    MyBodyCard()
+    MyBodyCard() {}
 }

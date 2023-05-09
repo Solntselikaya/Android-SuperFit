@@ -2,12 +2,14 @@ package com.example.superfit.presentation.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -34,7 +36,7 @@ fun MainScreen(navController: NavController) {
             style = MaterialTheme.typography.h5
         )
 
-        MyBodyCard()
+        MyBodyCard() {}
 
         Row(
             Modifier
@@ -60,6 +62,25 @@ fun MainScreen(navController: NavController) {
                     style = MaterialTheme.typography.caption
                 )
             }
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        TextButton(
+            onClick = { /*TODO*/ }
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.arrow_left),
+                contentDescription = null,
+                tint = Black
+            )
+
+            Text(
+                text = stringResource(R.string.sign_out),
+                modifier = Modifier,
+                style = MaterialTheme.typography.h5,
+                color = Black
+            )
         }
     }
 }
