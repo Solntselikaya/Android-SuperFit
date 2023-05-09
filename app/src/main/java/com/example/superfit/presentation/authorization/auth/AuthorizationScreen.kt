@@ -1,6 +1,9 @@
 package com.example.superfit.presentation.authorization.auth
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,8 +17,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.superfit.R
 import com.example.superfit.presentation.authorization.auth.AuthorizationEvent.*
+import com.example.superfit.presentation.authorization.auth.components.UserNameInput
 import com.example.superfit.presentation.common.AppTitle
-import com.example.superfit.presentation.common.InputField
 import com.example.superfit.presentation.ui.theme.Transparent
 import com.example.superfit.presentation.ui.theme.White
 
@@ -69,40 +72,4 @@ fun AuthorizationScreen(
         }
     }
 
-}
-
-@Composable
-fun UserNameInput(
-    modifier: Modifier,
-    value: String,
-    onSignUpButtonClick: (String) -> Unit,
-    onValueChanged: (String) -> Unit
-) {
-    Column(
-        modifier = modifier
-            .wrapContentSize()
-    ) {
-        InputField(
-            value = value,
-            placeHolderText = stringResource(R.string.user_name_input),
-            onValueChanged = { onValueChanged(it) }
-        )
-
-        TextButton(
-            onClick = { onSignUpButtonClick(value) },
-            modifier = Modifier.padding(start = 50.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.sign_in),
-                modifier = Modifier,
-                style = MaterialTheme.typography.h5,
-                color = White
-            )
-            Icon(
-                painter = painterResource(R.drawable.arrow_right),
-                contentDescription = null,
-                tint = White
-            )
-        }
-    }
 }
