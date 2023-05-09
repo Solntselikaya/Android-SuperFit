@@ -29,7 +29,7 @@ fun PINButtons(
         columns = GridCells.Fixed(3),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        items(numbers.size) {
+        items(count = numbers.size, key = { numbers[it] }) {
             TextButton(
                 modifier = Modifier
                     .wrapContentSize()

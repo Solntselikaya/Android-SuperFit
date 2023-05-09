@@ -1,6 +1,6 @@
 package com.example.superfit.data.dto
 
-data class RegistartionDto(
+data class RegistrationDto(
     val login: String,
-    val password: Int
+    val password: String
 )

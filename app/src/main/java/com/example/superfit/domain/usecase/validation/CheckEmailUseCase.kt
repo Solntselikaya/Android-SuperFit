@@ -1,4 +1,4 @@
-package com.example.superfit.domain.usecase
+package com.example.superfit.domain.usecase.validation
 
 import android.util.Patterns
 import com.example.superfit.R

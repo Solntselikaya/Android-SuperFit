@@ -2,11 +2,9 @@ package com.example.superfit.presentation.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,12 +18,25 @@ import com.example.superfit.R
 import com.example.superfit.presentation.ui.theme.White
 
 @Composable
-fun TopImage() {
+fun TopImage(
+    showBackButton: Boolean = false,
+    onBackPressed: () -> Unit
+) {
     Box(
         Modifier
             .wrapContentHeight()
             .fillMaxWidth()
     ) {
+        if (showBackButton) {
+            Icon(
+                painter = painterResource(R.drawable.arrow_back),
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(top = 40.dp, start = 16.dp)
+            )
+        }
+
         Image(
             painter = painterResource(R.drawable.background_main),
             contentDescription = null,

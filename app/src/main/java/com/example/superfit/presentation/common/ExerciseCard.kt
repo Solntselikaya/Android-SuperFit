@@ -36,7 +36,7 @@ fun ExerciseCard(
         Modifier
             .padding(top = 16.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth()
-            .wrapContentHeight()
+            .height(IntrinsicSize.Min)
             .clip(RoundedCornerShape(8.dp))
             .background(DarkGray)
             .clickable { onClick() }
@@ -47,7 +47,7 @@ fun ExerciseCard(
             modifier = Modifier
                 .weight(1f)
                 .height(114.dp)
-                .wrapContentWidth()
+                .fillMaxWidth()
                 .drawWithCache {
                     val gradient = Brush.horizontalGradient(
                         colors = listOf(Transparent, DarkGray),
@@ -59,7 +59,7 @@ fun ExerciseCard(
                         drawRect(gradient, blendMode = BlendMode.Darken)
                     }
                 },
-            contentScale = ContentScale.FillHeight,
+            contentScale = ContentScale.Crop
         )
 
         Column(

@@ -70,7 +70,7 @@ fun MyBodyCard(
                         drawRect(gradient, blendMode = BlendMode.Darken)
                     }
                 },
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Crop
         )
 
         Column(

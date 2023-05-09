@@ -1,4 +1,4 @@
-package com.example.superfit.domain.usecase
+package com.example.superfit.domain.usecase.validation
 
 import com.example.superfit.R
 
