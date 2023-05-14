@@ -8,6 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.superfit.presentation.authorization.auth.AuthorizationScreen
 import com.example.superfit.presentation.authorization.pin.PINScreen
+import com.example.superfit.presentation.exercises.ExercisesScreen
+import com.example.superfit.presentation.main.MainScreen
 import com.example.superfit.presentation.registration.RegistrationScreen
 
 const val USER_NAME = "user_name"
@@ -36,6 +38,14 @@ fun Navigation(navController: NavHostController) {
 
         composable(route = Screen.RegistrationScreen.route) {
             RegistrationScreen(navController = navController)
+        }
+
+        composable(route = Screen.MainScreen.route) {
+            MainScreen(navController = navController)
+        }
+
+        composable(route = Screen.ExercisesScreen.route) {
+            ExercisesScreen(navController = navController)
         }
 
     }

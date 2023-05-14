@@ -1,9 +1,6 @@
 package com.example.superfit.presentation.authorization.auth
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -52,7 +49,7 @@ fun AuthorizationScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .wrapContentSize()
-                .padding(bottom = 56.dp),
+                .navigationBarsPadding(),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Transparent,
                 contentColor = White
@@ -64,6 +61,7 @@ fun AuthorizationScreen(
                 style = MaterialTheme.typography.h5,
                 color = White
             )
+
             Icon(
                 painter = painterResource(R.drawable.arrow_right),
                 contentDescription = null,
@@ -71,5 +69,4 @@ fun AuthorizationScreen(
             )
         }
     }
-
 }

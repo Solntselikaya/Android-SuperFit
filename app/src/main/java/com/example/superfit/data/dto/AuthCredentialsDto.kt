@@ -1,6 +1,6 @@
 package com.example.superfit.data.dto
 
-data class AuthCredntialsDto(
+data class AuthCredentialsDto(
     val login: String,
     val password: String
 )

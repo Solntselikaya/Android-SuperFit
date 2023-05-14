@@ -5,9 +5,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.superfit.domain.usecase.CheckCodeRepeatUseCase
-import com.example.superfit.domain.usecase.CheckCodeUseCase
-import com.example.superfit.domain.usecase.CheckEmailUseCase
 import com.example.superfit.navigation.Screen
 import com.example.superfit.presentation.registration.RegistrationEvent.*
 import com.example.superfit.presentation.registration.RegistrationEvent as RegEvent
@@ -56,7 +53,7 @@ class RegistrationViewModel : ViewModel() {
     }
 
     private fun register(navController: NavController) {
-        val currData = (_state.value as RegState.InputInfo).data
+        /*val currData = (_state.value as RegState.InputInfo).data
 
         val checkEmailResult = CheckEmailUseCase().invoke(currData.email ?: "")
         val checkCodeResult = CheckCodeUseCase().invoke(currData.code ?: "")
@@ -73,7 +70,8 @@ class RegistrationViewModel : ViewModel() {
         if (checkCodeRepeatResult != -1) {
             val currError = _errorMessage.value.toMutableList()
             _errorMessage.value = currError.plus(checkCodeRepeatResult)
-        }
-    }
+        }*/
 
+        navController.navigate(Screen.MainScreen.route)
+    }
 }

@@ -1,16 +1,11 @@
 package com.example.superfit.data.api
 
 import com.example.superfit.data.dto.BodyParametersDto
-import com.example.superfit.data.dto.MessageDto
 import com.example.superfit.data.dto.ProfileInfoDto
 import com.example.superfit.data.dto.ProfilePhotoDto
 import okhttp3.MultipartBody
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Part
-import retrofit2.http.Path
+import retrofit2.Response
+import retrofit2.http.*
 
 interface ProfileApi {
 
@@ -20,7 +15,7 @@ interface ProfileApi {
     @POST("profile/params")
     suspend fun updateBodyParameters(
         @Body body: BodyParametersDto
-    ): MessageDto
+    ): Response<Void>
 
     @GET("profile/params/history")
     suspend fun getBodyParametersHistory(): List<BodyParametersDto>
@@ -41,6 +36,6 @@ interface ProfileApi {
     @DELETE("profile/photos/{id}")
     suspend fun deletePhotoById(
         @Path("id") photoId: String
-    ): MessageDto
+    ): Response<Void>
 
 }

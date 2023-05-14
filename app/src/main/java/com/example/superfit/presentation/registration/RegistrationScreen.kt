@@ -70,7 +70,7 @@ fun RegistrationScreen(
                 navController.popBackStack(Screen.AuthorizationScreen.route, false)
             },
             modifier = Modifier
-                .padding(bottom = 56.dp)
+                .navigationBarsPadding()
                 .wrapContentSize(),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Transparent,

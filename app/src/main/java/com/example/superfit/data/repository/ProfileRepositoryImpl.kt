@@ -2,11 +2,11 @@ package com.example.superfit.data.repository
 
 import com.example.superfit.data.api.ProfileApi
 import com.example.superfit.data.dto.BodyParametersDto
-import com.example.superfit.data.dto.MessageDto
 import com.example.superfit.data.dto.ProfileInfoDto
 import com.example.superfit.data.dto.ProfilePhotoDto
 import com.example.superfit.domain.repository.ProfileRepository
 import okhttp3.MultipartBody
+import retrofit2.Response
 
 class ProfileRepositoryImpl(
     private val api: ProfileApi
@@ -16,7 +16,7 @@ class ProfileRepositoryImpl(
         return api.getProfileInfo()
     }
 
-    override suspend fun updateBodyParameters(body: BodyParametersDto): MessageDto {
+    override suspend fun updateBodyParameters(body: BodyParametersDto): Response<Void> {
         return api.updateBodyParameters(body)
     }
 
@@ -36,7 +36,7 @@ class ProfileRepositoryImpl(
         return api.getPhotoById(id)
     }
 
-    override suspend fun deletePhotoById(id: String): MessageDto {
+    override suspend fun deletePhotoById(id: String): Response<Void> {
         return api.deletePhotoById(id)
     }
 

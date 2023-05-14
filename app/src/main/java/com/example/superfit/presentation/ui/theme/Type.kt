@@ -19,31 +19,49 @@ val Typography = Typography(
     h2 = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Bold,
-        fontSize = 64.sp
+        fontSize = 64.sp,
+        color = White
     ),
     h3 = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Light,
-        fontSize = 64.sp
+        fontSize = 64.sp,
+        color = White
     ),
     h4 = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Bold,
-        fontSize = 36.sp
+        fontSize = 36.sp,
+        color = White
     ),
     h5 = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Bold,
-        fontSize = 24.sp
+        fontSize = 24.sp,
+        color = White
     ),
     body1 = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Bold,
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        color = White
     ),
     subtitle1 = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Normal,
-        fontSize = 18.sp
+        fontSize = 18.sp,
+        color = White
+    ),
+    subtitle2 = TextStyle(
+        fontFamily = Montserrat,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
+        color = White
+    ),
+    caption = TextStyle(
+        fontFamily = Montserrat,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        color = LightGray
     )
 )
