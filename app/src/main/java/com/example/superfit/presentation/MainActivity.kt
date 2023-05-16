@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
-import androidx.navigation.compose.rememberNavController
 import com.example.superfit.R
 import com.example.superfit.navigation.Navigation
 import com.example.superfit.presentation.ui.theme.SuperFitTheme
@@ -19,8 +18,7 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             SuperFitTheme {
-                val navController = rememberNavController()
-                Navigation(navController)
+                Navigation()
             }
         }
     }

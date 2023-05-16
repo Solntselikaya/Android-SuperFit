@@ -4,11 +4,18 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.superfit.R
+import com.example.superfit.domain.usecase.auth.LoginUseCase
+import com.example.superfit.navigation.Screen
 import com.example.superfit.presentation.authorization.pin.PINEvent.*
-import com.example.superfit.presentation.authorization.pin.PINState as PINState
+import com.example.superfit.presentation.authorization.pin.PINState
+import kotlinx.coroutines.launch
 
-class PINViewModel : ViewModel() {
+class PINViewModel(
+    private val loginUseCase: LoginUseCase
+) : ViewModel() {
 
     private val _state: MutableState<PINState> =
         mutableStateOf(PINState.InputPIN("", ""))
@@ -18,14 +25,19 @@ class PINViewModel : ViewModel() {
         mutableStateOf((1..9).toList().shuffled())
     var numbers: State<List<Int>> = _numbers
 
-    /*private val _showError: MutableState<Boolean> =
-        mutableStateOf(false)
-    var showError: State<Boolean> = _showError*/
+    private val _error: MutableState<List<Int>> =
+        mutableStateOf(listOf())
+    var error: State<List<Int>> = _error
+
+    private fun hideError() {
+        _error.value = emptyList()
+    }
 
     fun accept(event: PINEvent) {
         when(event) {
-            is BackButtonClick -> navigateBack(event.navController)
-            is InputPIN        -> updatePIN(event.navController, event.name, event.pin)
+            OnDialogDismiss    -> { hideError() }
+            is BackButtonClick -> { navigateBack(event.navController) }
+            is InputPINProcess -> { updatePIN(event.navController, event.name, event.pin) }
         }
     }
 
@@ -41,7 +53,6 @@ class PINViewModel : ViewModel() {
         val newPin = (_state.value as PINState.InputPIN).pin + num
 
         if (newPin.length == 4) {
-            _state.value = PINState.Loading
             login(navController, name, newPin)
         } else {
             _state.value = PINState.InputPIN(name, newPin)
@@ -54,7 +65,26 @@ class PINViewModel : ViewModel() {
         name: String,
         pin: String
     ) {
-        // TODO: add navigation to main screen
+        val currName = (_state.value as PINState.InputPIN).name
+        _state.value = PINState.Loading
+
+        viewModelScope.launch {
+            try {
+                loginUseCase(name, pin)
+                navigateToMainScreen(navController)
+            } catch (ex: Exception) {
+                _state.value = PINState.InputPIN(currName, "")
+
+                _error.value = when(ex.message.toString()) {
+                    "HTTP 404 " -> mutableListOf(R.string.invalid_credentials)
+                    else -> mutableListOf(R.string.something_went_wrong)
+                }
+            }
+        }
+    }
+
+    private fun navigateToMainScreen(navController: NavController) {
+        navController.navigate(Screen.MainScreen.route)
     }
 
 }

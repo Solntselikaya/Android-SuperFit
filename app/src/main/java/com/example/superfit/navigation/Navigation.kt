@@ -1,10 +1,10 @@
 package com.example.superfit.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.superfit.presentation.authorization.auth.AuthorizationScreen
 import com.example.superfit.presentation.authorization.pin.PINScreen
@@ -15,7 +15,9 @@ import com.example.superfit.presentation.registration.RegistrationScreen
 const val USER_NAME = "user_name"
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation() {
+    val navController = rememberNavController()
+
     NavHost(
         navController = navController,
         startDestination = Screen.AuthorizationScreen.route

@@ -14,8 +14,25 @@ import com.example.superfit.domain.repository.ProfileRepository
 import com.example.superfit.data.api.AuthApi
 import com.example.superfit.data.repository.AuthRepositoryImpl
 import com.example.superfit.domain.repository.AuthRepository
+import com.example.superfit.domain.usecase.auth.GetTokenUseCase
+import com.example.superfit.domain.usecase.auth.LoginUseCase
+import com.example.superfit.domain.usecase.auth.RegisterUseCase
+import com.example.superfit.domain.usecase.profile.GetProfileInfoUseCase
+import com.example.superfit.domain.usecase.profile.body.parameters.GetBodyParametersHistoryUseCase
+import com.example.superfit.domain.usecase.profile.body.parameters.UpdateBodyParametersUseCase
+import com.example.superfit.domain.usecase.profile.photo.DeletePhotoByIdUseCase
+import com.example.superfit.domain.usecase.profile.photo.GetPhotoByIdUseCase
+import com.example.superfit.domain.usecase.profile.photo.GetPhotosUseCase
+import com.example.superfit.domain.usecase.profile.photo.UploadPhotoUseCase
+import com.example.superfit.domain.usecase.training.GetUserTrainingListUseCase
+import com.example.superfit.domain.usecase.training.SaveUserTrainingUseCase
+import com.example.superfit.domain.usecase.validation.*
+import com.example.superfit.presentation.authorization.auth.AuthorizationViewModel
+import com.example.superfit.presentation.authorization.pin.PINViewModel
+import com.example.superfit.presentation.registration.RegistrationViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -41,7 +58,6 @@ val appModule = module {
             .build()
             .create(AuthApi::class.java)
     }
-
     single<AuthRepository> {
         AuthRepositoryImpl(get())
     }
@@ -54,7 +70,6 @@ val appModule = module {
             .build()
             .create(ProfileApi::class.java)
     }
-
     single<ProfileRepository> {
         ProfileRepositoryImpl(get())
     }
@@ -67,9 +82,52 @@ val appModule = module {
             .build()
             .create(TrainingApi::class.java)
     }
-
     single<TrainingRepository> {
         TrainingRepositoryImpl(get())
+    }
+
+    /* UseCases */
+    factory { CheckUserNameUseCase() }
+    factory { CheckEmailUseCase() }
+    factory { CheckCodeUseCase() }
+    factory { CheckCodeRepeatUseCase() }
+    factory { CheckFieldsFilledUseCase() }
+
+    factory { GetTokenUseCase(get()) }
+    factory { LoginUseCase(get()) }
+    factory { RegisterUseCase(get()) }
+
+    factory { GetProfileInfoUseCase(get()) }
+
+    factory { GetBodyParametersHistoryUseCase(get()) }
+    factory { UpdateBodyParametersUseCase(get()) }
+
+    factory { GetPhotosUseCase(get()) }
+    factory { GetPhotoByIdUseCase(get()) }
+    factory { UploadPhotoUseCase(get()) }
+    factory { DeletePhotoByIdUseCase(get()) }
+
+    factory { GetUserTrainingListUseCase(get()) }
+    factory { SaveUserTrainingUseCase(get()) }
+
+    /* ViewModels */
+    viewModel {
+        AuthorizationViewModel(get())
+    }
+
+    viewModel {
+        PINViewModel(get())
+    }
+
+    viewModel {
+        RegistrationViewModel(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
     }
 
 }

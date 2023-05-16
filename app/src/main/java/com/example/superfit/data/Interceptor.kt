@@ -15,7 +15,11 @@ class Interceptor: Interceptor {
             .addHeader("Content-Type", "application/json")
             //.addHeader("Authorization", "Bearer ${token}")
             .build()
-        return chain.proceed(newRequest)
+        val response = chain.proceed(newRequest)
+        if (response.code == 400) {
+            throw IOException("HTTP 400")
+        }
+        return response
     }
 
 }

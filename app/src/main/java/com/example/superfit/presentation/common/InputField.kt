@@ -9,9 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -24,10 +25,11 @@ import com.example.superfit.presentation.ui.theme.White
 fun InputField(
     value: String,
     placeHolderText: String,
+    focusManager: FocusManager,
+    imeAction: ImeAction,
     keyBoardType: KeyboardType = KeyboardType.Text,
     onValueChanged: (String) -> Unit
 ) {
-    val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     BasicTextField(
         value = value,
@@ -37,11 +39,17 @@ fun InputField(
             .fillMaxWidth(),
         enabled = true,
         textStyle = MaterialTheme.typography.subtitle1,
-        keyboardOptions = KeyboardOptions(keyboardType = keyBoardType, imeAction = ImeAction.Done),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = keyBoardType,
+            imeAction = imeAction
+        ),
         keyboardActions = KeyboardActions(
             onDone = {
                 keyboardController?.hide()
                 focusManager.clearFocus()
+            },
+            onNext = {
+                focusManager.moveFocus(FocusDirection.Down)
             }
         ),
         singleLine = true,

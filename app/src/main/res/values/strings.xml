@@ -15,10 +15,15 @@
     <string name="repeat_code_input">RepeatCode</string>
 
     <!-- Error messages -->
+    <string name="something_went_wrong">Что-то пошло не так</string>
+    <string name="invalid_credentials">Неверные имя пользователя или пин-код</string>
+    <string name="fill_all_fields">Пожалуйста, заполните все поля</string>
+    <string name="email_already_used">Пользователь с таким Email уже существует</string>
     <string name="email_error_message">Некорректный e-mail</string>
     <string name="code_error_message">Код не должен содержать нули</string>
     <string name="code_length_error_message">Код должен быть длиной 4 символа</string>
     <string name="code_repeat_error_message">Введенные коды не совпадают</string>
+    <string name="user_name_error_message">Введите данные в поле</string>
 
     <!-- Trainings -->
     <string name="push_ups">Push-Ups</string>
@@ -42,5 +47,6 @@
     <string name="undefined">Undefined</string>
     <string name="details">Details</string>
     <string name="exercises">Exercises</string>
+    <string name="error">Ошибка</string>
 
 </resources>

@@ -9,8 +9,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.superfit.R
 import com.example.superfit.presentation.common.InputField
@@ -28,9 +30,12 @@ fun UserNameInput(
         modifier = modifier
             .wrapContentSize()
     ) {
+        val focusManager = LocalFocusManager.current
         InputField(
             value = value,
-            placeHolderText = stringResource(R.string.user_name_input),
+            placeHolderText = stringResource(R.string.email_input),
+            focusManager = focusManager,
+            imeAction = ImeAction.Done,
             onValueChanged = { onValueChanged(it) }
         )
 

@@ -8,9 +8,12 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.superfit.R
@@ -34,15 +37,20 @@ fun InputFields(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val focusManager = LocalFocusManager.current
         InputField(
             value = userName,
             placeHolderText = stringResource(R.string.user_name_input),
+            focusManager = focusManager,
+            imeAction = ImeAction.Next,
             onValueChanged = { onValueChanged(RegisterBody(userName = it)) }
         )
 
         InputField(
             value = email,
             placeHolderText = stringResource(R.string.email_input),
+            focusManager = focusManager,
+            imeAction = ImeAction.Next,
             keyBoardType = KeyboardType.Email,
             onValueChanged = { onValueChanged(RegisterBody(email = it)) }
         )
@@ -50,6 +58,8 @@ fun InputFields(
         InputField(
             value = code,
             placeHolderText = stringResource(R.string.code_input),
+            focusManager = focusManager,
+            imeAction = ImeAction.Next,
             keyBoardType = KeyboardType.Decimal,
             onValueChanged = { onValueChanged(RegisterBody(code = it)) }
         )
@@ -57,6 +67,8 @@ fun InputFields(
         InputField(
             value = repeatCode,
             placeHolderText = stringResource(R.string.repeat_code_input),
+            focusManager = focusManager,
+            imeAction = ImeAction.Done,
             keyBoardType = KeyboardType.Decimal,
             onValueChanged = { onValueChanged(RegisterBody(repeatCode = it)) }
         )

@@ -13,13 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.superfit.R
 import com.example.superfit.presentation.ui.theme.White
 
 @Composable
 fun TopImage(
-    showBackButton: Boolean = false,
+    showBackButton: Boolean,
     onBackPressed: () -> Unit
 ) {
     Box(
@@ -27,15 +28,25 @@ fun TopImage(
             .wrapContentHeight()
             .fillMaxWidth()
     ) {
-        if (showBackButton) {
+        /*if (showBackButton) {
             Icon(
                 painter = painterResource(R.drawable.arrow_back),
                 contentDescription = null,
                 modifier = Modifier
                     .align(Alignment.TopStart)
-                    .padding(top = 40.dp, start = 16.dp)
+                    .padding(top = 40.dp, start = 16.dp),
+                tint = White
             )
-        }
+        }*/
+
+        Icon(
+            painter = painterResource(R.drawable.arrow_back),
+            contentDescription = null,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(top = 40.dp, start = 16.dp),
+            tint = White
+        )
 
         Image(
             painter = painterResource(R.drawable.background_main),
@@ -65,5 +76,13 @@ fun TopImage(
                 )
                 .height(24.dp)
         )
+    }
+}
+
+@Preview
+@Composable
+fun TopImagePreview() {
+    TopImage(showBackButton = true) {
+
     }
 }

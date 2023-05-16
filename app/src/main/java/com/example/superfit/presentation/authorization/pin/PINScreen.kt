@@ -18,19 +18,43 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.superfit.R
 import com.example.superfit.navigation.USER_NAME
+import com.example.superfit.presentation.authorization.pin.PINState.*
+import com.example.superfit.presentation.authorization.pin.PINEvent.*
 import com.example.superfit.presentation.authorization.pin.components.PINButtons
 import com.example.superfit.presentation.common.AppTitle
+import com.example.superfit.presentation.common.ErrorDialog
+import com.example.superfit.presentation.common.LoadingBar
 import com.example.superfit.presentation.ui.theme.White
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun PINScreen(
     userName: Bundle,
-    navController: NavController,
-    viewModel: PINViewModel = viewModel()
+    navController: NavController
 ) {
+    val viewModel = getViewModel<PINViewModel>()
 
     val name = userName.getString(USER_NAME).toString()
+    val state: PINState by remember { viewModel.state }
     val numbers: List<Int> by remember { viewModel.numbers }
+    val error: List<Int> by remember { viewModel.error }
+
+    ErrorDialog(error = error) { viewModel.accept(OnDialogDismiss) }
+
+    when(state) {
+        is InputPIN -> PINScreenContent(navController, name, numbers, viewModel)
+        is Loading  -> LoadingBar()
+    }
+
+}
+
+@Composable
+fun PINScreenContent(
+    navController: NavController,
+    name: String,
+    numbers: List<Int>,
+    viewModel: PINViewModel
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -65,7 +89,7 @@ fun PINScreen(
 
             PINButtons(
                 numbers
-            ) { viewModel.accept(PINEvent.InputPIN(navController, name, it)) }
+            ) { viewModel.accept(InputPINProcess(navController, name, it)) }
         }
     }
 }

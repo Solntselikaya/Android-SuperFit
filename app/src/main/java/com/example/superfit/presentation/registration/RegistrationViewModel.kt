@@ -1,37 +1,56 @@
 package com.example.superfit.presentation.registration
 
+import android.text.TextUtils
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.superfit.R
+import com.example.superfit.domain.usecase.auth.LoginUseCase
+import com.example.superfit.domain.usecase.auth.RegisterUseCase
+import com.example.superfit.domain.usecase.validation.CheckCodeRepeatUseCase
+import com.example.superfit.domain.usecase.validation.CheckCodeUseCase
+import com.example.superfit.domain.usecase.validation.CheckEmailUseCase
+import com.example.superfit.domain.usecase.validation.CheckFieldsFilledUseCase
 import com.example.superfit.navigation.Screen
 import com.example.superfit.presentation.registration.RegistrationEvent.*
+import kotlinx.coroutines.launch
 import com.example.superfit.presentation.registration.RegistrationEvent as RegEvent
 import com.example.superfit.presentation.registration.RegistrationState as RegState
+import com.example.superfit.presentation.registration.RegistrationState.*
+import java.io.IOException
 
-class RegistrationViewModel : ViewModel() {
+class RegistrationViewModel(
+    private val checkFieldsFilledUseCase: CheckFieldsFilledUseCase,
+    private val checkEmailUseCase: CheckEmailUseCase,
+    private val checkCodeUseCase: CheckCodeUseCase,
+    private val checkCodeRepeatUseCase: CheckCodeRepeatUseCase,
+    private val registerUseCase: RegisterUseCase,
+    private val loginUseCase: LoginUseCase
+) : ViewModel() {
 
     private val _state: MutableState<RegState> =
         mutableStateOf(RegState.InputInfo(RegisterBody("", "", "", "")))
     var state: State<RegState> = _state
 
-    private val _errorMessage: MutableState<List<Int>> =
+    private val _error: MutableState<List<Int>> =
         mutableStateOf(listOf())
-    var errorMessage: State<List<Int>> = _errorMessage
-    //var errorMessage: MutableList<Int> = mutableListOf()
+    var error: State<List<Int>> = _error
+
+    private fun hideError() {
+        _error.value = emptyList()
+    }
 
     fun accept(event: RegEvent) {
         when(event) {
-            OnDialogDismiss      -> onDialogDismiss()
-            is InputInfo         -> changeInfo(event.info)
-            is SignInButtonClick -> navigateToAuthorizationScreen(event.navController)
-            is SignUpButtonClick -> register(event.navController)
+            OnDialogDismiss      -> { hideError() }
+            is InputInfoProcess  -> { changeInfo(event.info) }
+            is SignInButtonClick -> { navigateToAuthorizationScreen(event.navController) }
+            is SignUpButtonClick -> { register(event.navController) }
         }
-    }
-
-    private fun onDialogDismiss() {
-        _errorMessage.value = listOf()
     }
 
     private fun changeInfo(
@@ -40,12 +59,19 @@ class RegistrationViewModel : ViewModel() {
         val newData = (_state.value as RegState.InputInfo).data
 
         when {
-            newInfo.userName != null   -> newData.userName = newInfo.userName
-            newInfo.email != null      -> newData.email = newInfo.email
-            newInfo.code != null       -> newData.code = newInfo.code
-            newInfo.repeatCode != null -> newData.repeatCode = newInfo.repeatCode
+            newInfo.userName != null      -> newData.userName = newInfo.userName
+            newInfo.email != null         -> newData.email = newInfo.email
+            checkCode(newInfo.code)       -> newData.code = newInfo.code
+            checkCode(newInfo.repeatCode) -> newData.repeatCode = newInfo.repeatCode
         }
         _state.value = RegState.InputInfo(newData)
+    }
+
+    private fun checkCode(code: String?): Boolean {
+        return code != null
+                && TextUtils.isDigitsOnly(code)
+                && code.length <= 4
+                && !code.contains("0")
     }
 
     private fun navigateToAuthorizationScreen(navController: NavController) {
@@ -53,25 +79,71 @@ class RegistrationViewModel : ViewModel() {
     }
 
     private fun register(navController: NavController) {
-        /*val currData = (_state.value as RegState.InputInfo).data
-
-        val checkEmailResult = CheckEmailUseCase().invoke(currData.email ?: "")
-        val checkCodeResult = CheckCodeUseCase().invoke(currData.code ?: "")
-        val checkCodeRepeatResult = CheckCodeRepeatUseCase().invoke(currData.code ?: "", currData.repeatCode ?: "")
-
-        if (checkEmailResult != -1) {
-            val currError = _errorMessage.value.toMutableList()
-            _errorMessage.value = currError.plus(checkEmailResult)
+        checkFields()
+        if (_error.value.isNotEmpty()) {
+            return
         }
-        if (checkCodeResult != 1) {
-            val currError = _errorMessage.value.toMutableList()
-            _errorMessage.value = currError.plus(checkCodeResult)
-        }
-        if (checkCodeRepeatResult != -1) {
-            val currError = _errorMessage.value.toMutableList()
-            _errorMessage.value = currError.plus(checkCodeRepeatResult)
-        }*/
 
+        val currData = (_state.value as InputInfo).data
+        _state.value = Loading
+        viewModelScope.launch {
+            try {
+                registerUseCase(
+                    currData.email ?: "",
+                    currData.code ?: ""
+                )
+                loginUseCase(
+                    currData.email ?: "",
+                    currData.code ?: ""
+                )
+                navigateToMainScreen(navController)
+            } catch (ex: Exception) {
+                _state.value = InputInfo(currData)
+                _error.value = when(ex.message.toString()) {
+                    "HTTP 400" -> mutableListOf(R.string.email_already_used)
+                    else       -> mutableListOf(R.string.something_went_wrong)
+                }
+            }
+        }
+    }
+
+    private fun checkFields() {
+        val currData = (_state.value as RegState.InputInfo).data
+
+        val check = checkFieldsFilledUseCase(
+            currData.userName ?: "",
+            currData.email ?: "",
+            currData.code ?: "",
+            currData.repeatCode ?: "")
+        if (check != -1) {
+            _error.value = mutableListOf(check)
+            return
+        }
+
+        val newError = mutableListOf<Int>()
+        val emailCheck = checkEmailUseCase(currData.email ?: "")
+        if (emailCheck != -1) {
+            newError.add(emailCheck)
+        }
+
+        val codeCheck = checkCodeUseCase(currData.code ?: "")
+        if (codeCheck != -1) {
+            newError.add(codeCheck)
+        }
+
+        val codeRepCheck = checkCodeRepeatUseCase(
+            currData.code ?: "",
+            currData.repeatCode ?: ""
+        )
+        if (codeRepCheck != -1) {
+            newError.add(codeRepCheck)
+        }
+
+        _error.value = newError
+    }
+
+    private fun navigateToMainScreen(navController: NavController) {
         navController.navigate(Screen.MainScreen.route)
     }
+
 }
