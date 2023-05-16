@@ -7,14 +7,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.superfit.R
+import com.example.superfit.domain.model.toAccessTokenDto
 import com.example.superfit.domain.usecase.auth.LoginUseCase
+import com.example.superfit.domain.usecase.token.SaveTokenToLocalStorageUseCase
 import com.example.superfit.navigation.Screen
 import com.example.superfit.presentation.authorization.pin.PINEvent.*
-import com.example.superfit.presentation.authorization.pin.PINState
 import kotlinx.coroutines.launch
 
 class PINViewModel(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val saveTokenToLocalStorageUseCase: SaveTokenToLocalStorageUseCase
 ) : ViewModel() {
 
     private val _state: MutableState<PINState> =
@@ -70,7 +72,10 @@ class PINViewModel(
 
         viewModelScope.launch {
             try {
-                loginUseCase(name, pin)
+                val tokenModel = loginUseCase(name, pin)
+
+                saveTokenToLocalStorageUseCase.execute(tokenModel.toAccessTokenDto())
+
                 navigateToMainScreen(navController)
             } catch (ex: Exception) {
                 _state.value = PINState.InputPIN(currName, "")

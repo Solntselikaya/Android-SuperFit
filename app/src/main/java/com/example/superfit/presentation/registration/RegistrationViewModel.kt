@@ -1,7 +1,6 @@
 package com.example.superfit.presentation.registration
 
 import android.text.TextUtils
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -9,19 +8,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.superfit.R
+import com.example.superfit.domain.model.toAccessTokenDto
 import com.example.superfit.domain.usecase.auth.LoginUseCase
 import com.example.superfit.domain.usecase.auth.RegisterUseCase
+import com.example.superfit.domain.usecase.token.SaveTokenToLocalStorageUseCase
 import com.example.superfit.domain.usecase.validation.CheckCodeRepeatUseCase
 import com.example.superfit.domain.usecase.validation.CheckCodeUseCase
 import com.example.superfit.domain.usecase.validation.CheckEmailUseCase
 import com.example.superfit.domain.usecase.validation.CheckFieldsFilledUseCase
 import com.example.superfit.navigation.Screen
 import com.example.superfit.presentation.registration.RegistrationEvent.*
+import com.example.superfit.presentation.registration.RegistrationState.InputInfo
+import com.example.superfit.presentation.registration.RegistrationState.Loading
 import kotlinx.coroutines.launch
 import com.example.superfit.presentation.registration.RegistrationEvent as RegEvent
 import com.example.superfit.presentation.registration.RegistrationState as RegState
-import com.example.superfit.presentation.registration.RegistrationState.*
-import java.io.IOException
 
 class RegistrationViewModel(
     private val checkFieldsFilledUseCase: CheckFieldsFilledUseCase,
@@ -29,11 +30,12 @@ class RegistrationViewModel(
     private val checkCodeUseCase: CheckCodeUseCase,
     private val checkCodeRepeatUseCase: CheckCodeRepeatUseCase,
     private val registerUseCase: RegisterUseCase,
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val saveTokenToLocalStorageUseCase: SaveTokenToLocalStorageUseCase
 ) : ViewModel() {
 
     private val _state: MutableState<RegState> =
-        mutableStateOf(RegState.InputInfo(RegisterBody("", "", "", "")))
+        mutableStateOf(InputInfo(RegisterBody("", "", "", "")))
     var state: State<RegState> = _state
 
     private val _error: MutableState<List<Int>> =
@@ -56,7 +58,7 @@ class RegistrationViewModel(
     private fun changeInfo(
         newInfo: RegisterBody
     ) {
-        val newData = (_state.value as RegState.InputInfo).data
+        val newData = (_state.value as InputInfo).data
 
         when {
             newInfo.userName != null      -> newData.userName = newInfo.userName
@@ -64,7 +66,7 @@ class RegistrationViewModel(
             checkCode(newInfo.code)       -> newData.code = newInfo.code
             checkCode(newInfo.repeatCode) -> newData.repeatCode = newInfo.repeatCode
         }
-        _state.value = RegState.InputInfo(newData)
+        _state.value = InputInfo(newData)
     }
 
     private fun checkCode(code: String?): Boolean {
@@ -92,10 +94,13 @@ class RegistrationViewModel(
                     currData.email ?: "",
                     currData.code ?: ""
                 )
-                loginUseCase(
+                val tokenModel = loginUseCase(
                     currData.email ?: "",
                     currData.code ?: ""
                 )
+
+                saveTokenToLocalStorageUseCase.execute(tokenModel.toAccessTokenDto())
+
                 navigateToMainScreen(navController)
             } catch (ex: Exception) {
                 _state.value = InputInfo(currData)
@@ -108,7 +113,7 @@ class RegistrationViewModel(
     }
 
     private fun checkFields() {
-        val currData = (_state.value as RegState.InputInfo).data
+        val currData = (_state.value as InputInfo).data
 
         val check = checkFieldsFilledUseCase(
             currData.userName ?: "",

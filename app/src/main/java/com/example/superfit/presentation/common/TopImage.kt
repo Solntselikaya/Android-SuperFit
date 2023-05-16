@@ -21,7 +21,7 @@ import com.example.superfit.presentation.ui.theme.White
 
 @Composable
 fun TopImage(
-    showBackButton: Boolean,
+    showBackButton: Boolean = true,
     onBackPressed: () -> Unit
 ) {
     Box(
@@ -41,14 +41,14 @@ fun TopImage(
 
         if (showBackButton) {
             IconButton(
-                onClick = { onBackPressed() }
+                onClick = { onBackPressed() },
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(top = 16.dp, start = 16.dp),
             ) {
                 Icon(
                     painter = painterResource(R.drawable.arrow_back),
                     contentDescription = null,
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(top = 40.dp, start = 16.dp),
                     tint = White
                 )
             }
