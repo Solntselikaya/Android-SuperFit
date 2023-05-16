@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,26 +29,6 @@ fun TopImage(
             .wrapContentHeight()
             .fillMaxWidth()
     ) {
-        /*if (showBackButton) {
-            Icon(
-                painter = painterResource(R.drawable.arrow_back),
-                contentDescription = null,
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(top = 40.dp, start = 16.dp),
-                tint = White
-            )
-        }*/
-
-        Icon(
-            painter = painterResource(R.drawable.arrow_back),
-            contentDescription = null,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(top = 40.dp, start = 16.dp),
-            tint = White
-        )
-
         Image(
             painter = painterResource(R.drawable.background_main),
             contentDescription = null,
@@ -57,6 +38,21 @@ fun TopImage(
                 .align(Alignment.Center),
             contentScale = ContentScale.Crop
         )
+
+        if (showBackButton) {
+            IconButton(
+                onClick = { onBackPressed() }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.arrow_back),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(top = 40.dp, start = 16.dp),
+                    tint = White
+                )
+            }
+        }
 
         Text(
             text = stringResource(R.string.app_name),
@@ -82,7 +78,5 @@ fun TopImage(
 @Preview
 @Composable
 fun TopImagePreview() {
-    TopImage(showBackButton = true) {
-
-    }
+    TopImage(showBackButton = true) {}
 }
