@@ -43,7 +43,7 @@ fun PINScreen(
 
     when(state) {
         is InputPIN -> PINScreenContent(navController, name, numbers, viewModel)
-        is Loading  -> LoadingBar()
+        is Loading  -> LoadingBar(Modifier.fillMaxSize())
     }
 
 }

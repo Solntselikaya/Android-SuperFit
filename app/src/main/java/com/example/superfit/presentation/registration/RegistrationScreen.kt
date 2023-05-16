@@ -36,7 +36,7 @@ fun RegistrationScreen(
     ErrorDialog(error = error) { viewModel.accept(OnDialogDismiss) }
 
     when(state) {
-        Loading      -> { LoadingBar() }
+        Loading      -> { LoadingBar(Modifier.fillMaxSize()) }
         is InputInfo -> { RegistrationScreenContent(navController, state, viewModel) }
     }
 }

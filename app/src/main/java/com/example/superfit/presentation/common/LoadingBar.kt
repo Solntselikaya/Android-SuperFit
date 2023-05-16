@@ -10,8 +10,11 @@ import com.example.superfit.presentation.ui.theme.White
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun LoadingBar(color: Color = White) {
-    Box(modifier = Modifier.fillMaxSize()) {
+fun LoadingBar(
+    modifier: Modifier = Modifier,
+    color: Color = White
+) {
+    Box(modifier = modifier) {
         CircularProgressIndicator(
             modifier = Modifier.align(Alignment.Center),
             color = color
