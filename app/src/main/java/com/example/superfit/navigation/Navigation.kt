@@ -6,13 +6,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.superfit.common.Constants.EXERCISE_TYPE
+import com.example.superfit.common.Constants.REPEATS
+import com.example.superfit.common.Constants.USER_NAME
 import com.example.superfit.presentation.authorization.auth.AuthorizationScreen
 import com.example.superfit.presentation.authorization.pin.PINScreen
+import com.example.superfit.presentation.exercise.ExerciseScreen
 import com.example.superfit.presentation.exercises.ExercisesScreen
 import com.example.superfit.presentation.main.MainScreen
 import com.example.superfit.presentation.registration.RegistrationScreen
-
-const val USER_NAME = "user_name"
 
 @Composable
 fun Navigation() {
@@ -48,6 +50,19 @@ fun Navigation() {
 
         composable(route = Screen.ExercisesScreen.route) {
             ExercisesScreen(navController = navController)
+        }
+
+        composable(
+            route = Screen.ExerciseScreen.route,
+            arguments = listOf(
+                navArgument(EXERCISE_TYPE) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            it.arguments?.let { it1 ->
+                ExerciseScreen(arguments = it1, navController)
+            }
         }
 
     }

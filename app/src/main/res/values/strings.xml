@@ -36,6 +36,11 @@
     <string name="crunch_description">It involves the entire abs, but primarily it works the rectus abdominis muscle.</string>
     <string name="running">Running</string>
     <string name="running_description">It develops endurance, strengthens the legs and the cardiovascular system.</string>
+    
+    <string name="need_to_do">NEED TO DO</string>
+    <string name="times_left">TIMES LEFT</string>
+    <string name="seconds_left">SECONDS LEFT</string>
+    <string name="meters_passed">METERS PASSED</string>
 
     <!-- Strings with args -->
     <string name="my_weight">%1$i kg</string>
@@ -48,5 +53,6 @@
     <string name="details">Details</string>
     <string name="exercises">Exercises</string>
     <string name="error">Ошибка</string>
+    <string name="finish">Finish</string>
 
 </resources>
