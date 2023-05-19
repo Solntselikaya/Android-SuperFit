@@ -9,14 +9,16 @@ import androidx.navigation.NavController
 import com.example.superfit.R
 import com.example.superfit.domain.model.toAccessTokenDto
 import com.example.superfit.domain.usecase.auth.LoginUseCase
-import com.example.superfit.domain.usecase.token.SaveTokenToLocalStorageUseCase
+import com.example.superfit.domain.usecase.storage.credentials.SaveUserEmailInLocalStorageUseCase
+import com.example.superfit.domain.usecase.storage.token.SaveTokenToLocalStorageUseCase
 import com.example.superfit.navigation.Screen
 import com.example.superfit.presentation.authorization.pin.PINEvent.*
 import kotlinx.coroutines.launch
 
 class PINViewModel(
     private val loginUseCase: LoginUseCase,
-    private val saveTokenToLocalStorageUseCase: SaveTokenToLocalStorageUseCase
+    private val saveTokenToLocalStorageUseCase: SaveTokenToLocalStorageUseCase,
+    private val saveUserEmailInLocalStorageUseCase: SaveUserEmailInLocalStorageUseCase
 ) : ViewModel() {
 
     private val _state: MutableState<PINState> =
@@ -75,6 +77,7 @@ class PINViewModel(
                 val tokenModel = loginUseCase(name, pin)
 
                 saveTokenToLocalStorageUseCase.execute(tokenModel.toAccessTokenDto())
+                saveUserEmailInLocalStorageUseCase.execute(name)
 
                 navigateToMainScreen(navController)
             } catch (ex: Exception) {
@@ -89,7 +92,14 @@ class PINViewModel(
     }
 
     private fun navigateToMainScreen(navController: NavController) {
-        navController.navigate(Screen.MainScreen.route)
+        navController.navigate(Screen.MainScreen.route) {
+            popUpTo(Screen.AuthorizationScreen.route) {
+                saveState = false
+                inclusive = true
+            }
+            restoreState = false
+            launchSingleTop = true
+        }
     }
 
 }

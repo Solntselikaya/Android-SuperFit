@@ -1,4 +1,4 @@
-package com.example.superfit.domain.usecase.training
+package com.example.superfit.domain.usecase.training.api
 
 import com.example.superfit.data.dto.toTrainingModel
 import com.example.superfit.domain.model.TrainingModel

@@ -43,8 +43,8 @@ fun TopImage(
             IconButton(
                 onClick = { onBackPressed() },
                 modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(top = 16.dp, start = 16.dp),
+                    .padding(top = 38.dp, start = 16.dp)
+                    .align(Alignment.TopStart),
             ) {
                 Icon(
                     painter = painterResource(R.drawable.arrow_back),

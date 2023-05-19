@@ -7,10 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.superfit.domain.model.TrainingModel
-import com.example.superfit.domain.model.TrainingType
+import com.example.superfit.common.TrainingType
 import com.example.superfit.domain.usecase.profile.body.parameters.GetBodyParametersHistoryUseCase
-import com.example.superfit.domain.usecase.token.DeleteTokenFromLocalStorageUseCase
-import com.example.superfit.domain.usecase.training.GetUserTrainingListUseCase
+import com.example.superfit.domain.usecase.storage.credentials.DeleteUserEmailFromLocalStorageUseCase
+import com.example.superfit.domain.usecase.storage.token.DeleteTokenFromLocalStorageUseCase
+import com.example.superfit.domain.usecase.training.api.GetUserTrainingListUseCase
 import com.example.superfit.navigation.Screen
 import com.example.superfit.presentation.main.MainEvent.*
 import kotlinx.coroutines.launch
@@ -18,7 +19,8 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     private val getBodyParametersHistoryUseCase: GetBodyParametersHistoryUseCase,
     private val getUserTrainingListUseCase: GetUserTrainingListUseCase,
-    private val deleteTokenFromLocalStorageUseCase: DeleteTokenFromLocalStorageUseCase
+    private val deleteTokenFromLocalStorageUseCase: DeleteTokenFromLocalStorageUseCase,
+    private val deleteUserEmailFromLocalStorageUseCase: DeleteUserEmailFromLocalStorageUseCase
 ): ViewModel() {
 
     private val _state: MutableState<MainState> =
@@ -62,14 +64,25 @@ class MainViewModel(
     private fun getLastExercises(
         exercisesList: List<TrainingModel>
     ): List<Pair<TrainingType, Int>> {
-        val lastExercises: MutableList<Pair<TrainingType, Int>>
-                = mutableListOf(Pair(TrainingType.PUSH_UP, 10), Pair(TrainingType.PLANK, 10))
+        val lastExercises: MutableList<Pair<TrainingType, Int>> = mutableListOf(
+            Pair(TrainingType.PUSH_UP, TrainingType.PUSH_UP.defaultMinCount),
+            Pair(TrainingType.PLANK, TrainingType.PLANK.defaultMinCount)
+        )
 
         if (exercisesList.isNotEmpty() && exercisesList.size < 2) {
-            lastExercises.add(
-                1,
-                Pair(exercisesList[0].exercise, exercisesList[0].repeatCount)
-            )
+            when (exercisesList[0].exercise) {
+                TrainingType.PUSH_UP -> {
+                    lastExercises.add(0,
+                        Pair(exercisesList[0].exercise, exercisesList[0].repeatCount)
+                    )
+                }
+                else -> {
+                    lastExercises.add(1,
+                        Pair(exercisesList[0].exercise, exercisesList[0].repeatCount)
+                    )
+                }
+            }
+
         } else if (exercisesList.isNotEmpty()) {
             val lastIndex = exercisesList.lastIndex
             lastExercises.add(
@@ -89,7 +102,7 @@ class MainViewModel(
         when(event) {
             is OnMyBodyClick          -> navigateToMyBodyScreen(event.navController)
             is OnSeeAllExercisesClick -> navigateToExercisesScreen(event.navController)
-            is OnExerciseCardClick    -> navigateToExercise(event.exercise)
+            is OnExerciseCardClick    -> navigateToExercise(event.navController, event.exercise, event.count)
             is OnSignOutClick         -> signOut(event.navController)
         }
     }
@@ -102,13 +115,24 @@ class MainViewModel(
         navController.navigate(Screen.ExercisesScreen.route)
     }
 
-    private fun navigateToExercise(exercise: TrainingType) {
-
+    private fun navigateToExercise(
+        navController: NavController,
+        exercise: TrainingType,
+        repeats: Int,
+    ) {
+        navController.navigate(
+            Screen.ExerciseScreen.passExerciseInfo(exercise.name, repeats)
+        )
     }
 
     private fun signOut(navController: NavController) {
         deleteTokenFromLocalStorageUseCase.execute()
-        navController.popBackStack(Screen.AuthorizationScreen.route, false)
+        deleteUserEmailFromLocalStorageUseCase.execute()
+        navController.navigate(Screen.AuthorizationScreen.route) {
+            popUpTo(Screen.MainScreen.route) {
+                inclusive = true
+            }
+        }
     }
 
 }

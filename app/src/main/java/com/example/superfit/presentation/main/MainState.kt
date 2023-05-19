@@ -1,6 +1,6 @@
 package com.example.superfit.presentation.main
 
-import com.example.superfit.domain.model.TrainingType
+import com.example.superfit.common.TrainingType
 
 sealed class MainState {
     object Loading : MainState()

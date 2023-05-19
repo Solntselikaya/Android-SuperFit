@@ -14,12 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.superfit.R
-import com.example.superfit.navigation.USER_NAME
-import com.example.superfit.presentation.authorization.pin.PINState.*
-import com.example.superfit.presentation.authorization.pin.PINEvent.*
+import com.example.superfit.common.Constants.USER_NAME
+import com.example.superfit.presentation.authorization.pin.PINEvent.InputPINProcess
+import com.example.superfit.presentation.authorization.pin.PINEvent.OnDialogDismiss
+import com.example.superfit.presentation.authorization.pin.PINState.InputPIN
+import com.example.superfit.presentation.authorization.pin.PINState.Loading
 import com.example.superfit.presentation.authorization.pin.components.PINButtons
 import com.example.superfit.presentation.common.AppTitle
 import com.example.superfit.presentation.common.ErrorDialog

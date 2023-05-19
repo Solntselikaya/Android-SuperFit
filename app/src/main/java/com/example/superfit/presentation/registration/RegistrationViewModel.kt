@@ -11,7 +11,8 @@ import com.example.superfit.R
 import com.example.superfit.domain.model.toAccessTokenDto
 import com.example.superfit.domain.usecase.auth.LoginUseCase
 import com.example.superfit.domain.usecase.auth.RegisterUseCase
-import com.example.superfit.domain.usecase.token.SaveTokenToLocalStorageUseCase
+import com.example.superfit.domain.usecase.db.InitExerciseDatabaseForUserUseCase
+import com.example.superfit.domain.usecase.storage.token.SaveTokenToLocalStorageUseCase
 import com.example.superfit.domain.usecase.validation.CheckCodeRepeatUseCase
 import com.example.superfit.domain.usecase.validation.CheckCodeUseCase
 import com.example.superfit.domain.usecase.validation.CheckEmailUseCase
@@ -31,7 +32,8 @@ class RegistrationViewModel(
     private val checkCodeRepeatUseCase: CheckCodeRepeatUseCase,
     private val registerUseCase: RegisterUseCase,
     private val loginUseCase: LoginUseCase,
-    private val saveTokenToLocalStorageUseCase: SaveTokenToLocalStorageUseCase
+    private val saveTokenToLocalStorageUseCase: SaveTokenToLocalStorageUseCase,
+    private val initExerciseDatabaseForUserUseCase: InitExerciseDatabaseForUserUseCase
 ) : ViewModel() {
 
     private val _state: MutableState<RegState> =
@@ -100,6 +102,7 @@ class RegistrationViewModel(
                 )
 
                 saveTokenToLocalStorageUseCase.execute(tokenModel.toAccessTokenDto())
+                initExerciseDatabaseForUserUseCase()
 
                 navigateToMainScreen(navController)
             } catch (ex: Exception) {
@@ -148,7 +151,9 @@ class RegistrationViewModel(
     }
 
     private fun navigateToMainScreen(navController: NavController) {
-        navController.navigate(Screen.MainScreen.route)
+        navController.navigate(Screen.MainScreen.route) {
+
+        }
     }
 
 }

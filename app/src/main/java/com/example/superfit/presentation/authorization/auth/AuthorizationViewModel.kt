@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.superfit.domain.usecase.storage.credentials.GetUserEmailFromLocalStorageUseCase
 import com.example.superfit.domain.usecase.validation.CheckUserNameUseCase
 import com.example.superfit.navigation.Screen
 import com.example.superfit.presentation.authorization.auth.AuthorizationEvent.*
@@ -12,12 +13,20 @@ import com.example.superfit.presentation.authorization.auth.AuthorizationEvent a
 import com.example.superfit.presentation.authorization.auth.AuthorizationState as AuthState
 
 class AuthorizationViewModel(
-    private val checkUserNameUseCase: CheckUserNameUseCase
+    private val checkUserNameUseCase: CheckUserNameUseCase,
+    private val getUserEmailFromLocalStorageUseCase: GetUserEmailFromLocalStorageUseCase
 ) : ViewModel() {
 
     private val _state: MutableState<AuthState> =
         mutableStateOf(AuthState.InputUserName(""))
     var state: State<AuthState> = _state
+
+    init {
+        val savedEmail = getUserEmailFromLocalStorageUseCase.execute()
+        if (savedEmail.isNotBlank()) {
+            _state.value = AuthState.InputUserName(savedEmail)
+        }
+    }
 
     private val _error: MutableState<List<Int>> =
         mutableStateOf(listOf())

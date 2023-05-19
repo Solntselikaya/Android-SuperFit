@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.superfit.domain.model.TrainingType
+import com.example.superfit.common.TrainingType
 import com.example.superfit.presentation.common.ExerciseCard
 
 @Composable

@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.superfit.R
-import com.example.superfit.domain.model.TrainingType
+import com.example.superfit.common.TrainingType
 import com.example.superfit.presentation.common.ExerciseCard
 import com.example.superfit.presentation.common.LoadingBar
 import com.example.superfit.presentation.common.TopImage

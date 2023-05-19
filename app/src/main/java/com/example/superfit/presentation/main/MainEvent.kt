@@ -1,7 +1,7 @@
 package com.example.superfit.presentation.main
 
 import androidx.navigation.NavController
-import com.example.superfit.domain.model.TrainingType
+import com.example.superfit.common.TrainingType
 
 sealed class MainEvent {
     class OnMyBodyClick(val navController: NavController) : MainEvent()
