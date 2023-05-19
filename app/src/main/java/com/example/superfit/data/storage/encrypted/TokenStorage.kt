@@ -1,4 +1,4 @@
-package com.example.superfit.data.storage
+package com.example.superfit.data.storage.encrypted
 
 import com.example.superfit.data.dto.AccessTokenDto
 

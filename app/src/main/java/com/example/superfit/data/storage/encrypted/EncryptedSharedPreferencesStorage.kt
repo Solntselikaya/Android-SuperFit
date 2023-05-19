@@ -1,11 +1,12 @@
-package com.example.superfit.data.storage
+package com.example.superfit.data.storage.encrypted
 
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.example.superfit.data.dto.AccessTokenDto
+import com.example.superfit.data.storage.encrypted.UserCredentialsStorage.Companion.USER_EMAIL_KEY
 
-class SharedPreferencesStorage(context: Context) : TokenStorage {
+class EncryptedSharedPreferencesStorage(context: Context) : TokenStorage, UserCredentialsStorage {
 
     companion object {
         const val ENCRYPTED_SHARED_PREFS_NAME = "encryptedSharedPreferences"
@@ -44,5 +45,17 @@ class SharedPreferencesStorage(context: Context) : TokenStorage {
         sharedPreferences.edit()
             .remove(TokenStorage.TOKEN_KEY)
             .apply()
+    }
+
+    override fun saveUserEmail(email: String) {
+        sharedPreferences.edit().putString(USER_EMAIL_KEY, email).apply()
+    }
+
+    override fun getUserEmail(): String {
+        return sharedPreferences.getString(USER_EMAIL_KEY, "").toString()
+    }
+
+    override fun deleteUserEmail() {
+        sharedPreferences.edit().remove(USER_EMAIL_KEY).apply()
     }
 }
