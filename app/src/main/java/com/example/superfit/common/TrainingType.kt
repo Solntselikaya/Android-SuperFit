@@ -7,7 +7,9 @@ enum class TrainingType(
     val description: Int,
     val image: Int,
     val countText: Int,
-    val defaultMinCount: Int = 10
+    val defaultMinCount: Int = 10,
+    val units: Int = R.string.unit_times,
+    val unit: Int = R.string.unit_time
 ) {
     CRUNCH(
         R.string.crunch,
@@ -32,13 +34,17 @@ enum class TrainingType(
         R.string.plank_description,
         R.drawable.plank_image,
         R.string.seconds_left,
-        20
+        20,
+        R.string.unit_seconds,
+        R.string.unit_second
     ),
     RUNNING(
         R.string.running,
         R.string.running_description,
         R.drawable.running_image,
         R.string.meters_passed,
-        1000
+        1000,
+        R.string.unit_meters,
+        R.string.unit_meter
     )
 }

@@ -16,16 +16,19 @@ import com.example.superfit.presentation.common.TopImage
 import com.example.superfit.presentation.exercises.components.ExercisesList
 import com.example.superfit.presentation.ui.theme.Black
 import com.example.superfit.presentation.ui.theme.White
+import org.koin.androidx.compose.getViewModel
+import com.example.superfit.presentation.exercises.ExercisesEvent.*
 
 @Composable
 fun ExercisesScreen(navController: NavController) {
+    val viewModel = getViewModel<ExercisesViewModel>()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(White)
     ) {
-        TopImage(true) {  }
+        TopImage(true) { viewModel.accept(OnBackButtonClick(navController)) }
 
         Text(
             text = stringResource(R.string.exercises),
@@ -34,6 +37,6 @@ fun ExercisesScreen(navController: NavController) {
             style = MaterialTheme.typography.h5
         )
 
-        ExercisesList() {  }
+        ExercisesList() { viewModel.accept(OnExerciseCardClick(navController, it)) }
     }
 }

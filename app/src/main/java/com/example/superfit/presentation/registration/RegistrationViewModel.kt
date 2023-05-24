@@ -12,6 +12,7 @@ import com.example.superfit.domain.model.toAccessTokenDto
 import com.example.superfit.domain.usecase.auth.LoginUseCase
 import com.example.superfit.domain.usecase.auth.RegisterUseCase
 import com.example.superfit.domain.usecase.db.InitExerciseDatabaseForUserUseCase
+import com.example.superfit.domain.usecase.storage.credentials.SaveUserEmailInLocalStorageUseCase
 import com.example.superfit.domain.usecase.storage.token.SaveTokenToLocalStorageUseCase
 import com.example.superfit.domain.usecase.validation.CheckCodeRepeatUseCase
 import com.example.superfit.domain.usecase.validation.CheckCodeUseCase
@@ -33,7 +34,8 @@ class RegistrationViewModel(
     private val registerUseCase: RegisterUseCase,
     private val loginUseCase: LoginUseCase,
     private val saveTokenToLocalStorageUseCase: SaveTokenToLocalStorageUseCase,
-    private val initExerciseDatabaseForUserUseCase: InitExerciseDatabaseForUserUseCase
+    private val initExerciseDatabaseForUserUseCase: InitExerciseDatabaseForUserUseCase,
+    private val saveUserEmailInLocalStorageUseCase: SaveUserEmailInLocalStorageUseCase
 ) : ViewModel() {
 
     private val _state: MutableState<RegState> =
@@ -102,6 +104,7 @@ class RegistrationViewModel(
                 )
 
                 saveTokenToLocalStorageUseCase.execute(tokenModel.toAccessTokenDto())
+                saveUserEmailInLocalStorageUseCase.execute(currData.email ?: "")
                 initExerciseDatabaseForUserUseCase()
 
                 navigateToMainScreen(navController)

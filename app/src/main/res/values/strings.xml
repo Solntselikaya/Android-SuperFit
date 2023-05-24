@@ -15,6 +15,7 @@
     <string name="repeat_code_input">RepeatCode</string>
 
     <!-- Error messages -->
+    <string name="error">Ошибка</string>
     <string name="something_went_wrong">Что-то пошло не так</string>
     <string name="invalid_credentials">Неверные имя пользователя или пин-код</string>
     <string name="fill_all_fields">Пожалуйста, заполните все поля</string>
@@ -42,9 +43,18 @@
     <string name="seconds_left">SECONDS LEFT</string>
     <string name="meters_passed">METERS PASSED</string>
 
+    <string name="unit_times">times</string>
+    <string name="unit_time">time</string>
+    <string name="unit_meters">meters</string>
+    <string name="unit_meter">meter</string>
+    <string name="unit_seconds">seconds</string>
+    <string name="unit_second">second</string>
+
     <!-- Strings with args -->
     <string name="my_weight">%1$i kg</string>
     <string name="my_height">%1$i cm</string>
+    <string name="exercise_units_are_missing">%1$i %2$s are missing. You can do it better!</string>
+    <string name="exercise_unit_is_missing">%1$i %2$s is missing. You can do it better!</string>
 
     <!-- MainScreen -->
     <string name="my_body">My body</string>
@@ -52,7 +62,7 @@
     <string name="undefined">Undefined</string>
     <string name="details">Details</string>
     <string name="exercises">Exercises</string>
-    <string name="error">Ошибка</string>
     <string name="finish">Finish</string>
+    <string name="go_home">Go home</string>
 
 </resources>

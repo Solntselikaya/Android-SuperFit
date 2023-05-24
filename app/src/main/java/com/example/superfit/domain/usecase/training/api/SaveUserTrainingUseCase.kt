@@ -6,18 +6,22 @@ import com.example.superfit.domain.model.TrainingModel
 import com.example.superfit.domain.repository.TrainingRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class SaveUserTrainingUseCase(
     private val repository: TrainingRepository
 ) {
     suspend operator fun invoke(
-        date: String,
         exercise: String,
         repeatCount: Int
     ): TrainingModel =
         withContext(Dispatchers.IO) {
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val current = LocalDate.now().format(formatter)
+
             repository.save(
-                TrainingDto(date, exercise, repeatCount)
+                TrainingDto(current, exercise, repeatCount)
             ).toTrainingModel()
         }
 }

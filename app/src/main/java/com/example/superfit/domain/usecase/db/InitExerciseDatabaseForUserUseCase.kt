@@ -17,7 +17,7 @@ class InitExerciseDatabaseForUserUseCase(
             enumValues<TrainingType>().forEach { training ->
                 insertExerciseToDatabaseUseCase(
                     email,
-                    training,
+                    training.name,
                     training.defaultMinCount
                 )
             }

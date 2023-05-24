@@ -4,6 +4,7 @@ import com.example.superfit.common.TrainingType
 
 sealed class MainState {
     object Loading : MainState()
+    object Initial: MainState()
     class Content(
         val myWeight: Int?,
         val myHeight: Int?,

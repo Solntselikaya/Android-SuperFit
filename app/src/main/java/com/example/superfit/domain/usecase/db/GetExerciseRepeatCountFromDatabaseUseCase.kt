@@ -11,11 +11,11 @@ class GetExerciseRepeatCountFromDatabaseUseCase(
 ) {
     suspend operator fun invoke(
         userEmail: String,
-        exerciseType: TrainingType
-    ) = withContext(Dispatchers.IO) {
+        exerciseType: String
+    ): Int = withContext(Dispatchers.IO) {
         dao.getExerciseRepeatCount(
             exerciseType = exerciseType,
             userEmail =  userEmail
-        )
+        ).first()
     }
 }

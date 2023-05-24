@@ -7,6 +7,7 @@ import com.example.superfit.data.api.AuthApi
 import com.example.superfit.data.api.ProfileApi
 import com.example.superfit.data.api.TrainingApi
 import com.example.superfit.data.db.ExercisesRoomDatabase
+import com.example.superfit.data.db.provideDatabase
 import com.example.superfit.data.network.OkHttpProvider
 import com.example.superfit.data.repository.AuthRepositoryImpl
 import com.example.superfit.data.repository.ProfileRepositoryImpl
@@ -44,12 +45,16 @@ import com.example.superfit.domain.usecase.storage.firstrun.GetFirstRunFromLocal
 import com.example.superfit.domain.usecase.storage.firstrun.SaveFirstRunInLocalStorageUseCase
 import com.example.superfit.domain.usecase.training.api.GetUserTrainingListUseCase
 import com.example.superfit.domain.usecase.training.api.SaveUserTrainingUseCase
+import com.example.superfit.domain.usecase.training.db.GetExerciseRepeatCountForUserFromDatabaseUseCase
 import com.example.superfit.domain.usecase.training.db.IncreaseExerciseCountUseCase
 import com.example.superfit.domain.usecase.validation.*
 import com.example.superfit.presentation.authorization.auth.AuthorizationViewModel
 import com.example.superfit.presentation.authorization.pin.PINViewModel
+import com.example.superfit.presentation.exercise.ExerciseViewModel
+import com.example.superfit.presentation.exercises.ExercisesViewModel
 import com.example.superfit.presentation.main.MainViewModel
 import com.example.superfit.presentation.registration.RegistrationViewModel
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -60,15 +65,10 @@ val appModule = module {
 
     /* Database */
     single {
-        Room.databaseBuilder(
-            androidContext(),
-            ExercisesRoomDatabase::class.java,
-            DATABASE_NAME
-        ).build()
+        provideDatabase(application = get())
     }
     single {
-        val database = get<ExercisesRoomDatabase>()
-        database.collectionDao()
+        get<ExercisesRoomDatabase>().exercisesDao()
     }
 
     /* API */
@@ -160,6 +160,7 @@ val appModule = module {
 
     factory { InitExerciseDatabaseForUserUseCase(get(), get()) }
     factory { IncreaseExerciseCountUseCase(get(), get(), get()) }
+    factory { GetExerciseRepeatCountForUserFromDatabaseUseCase(get(), get()) }
 
     /* ViewModels */
     viewModel {
@@ -179,12 +180,21 @@ val appModule = module {
             get(),
             get(),
             get(),
+            get(),
             get()
         )
     }
 
     viewModel {
         MainViewModel(get(), get(), get(), get())
+    }
+
+    viewModel {
+        ExercisesViewModel()
+    }
+
+    viewModel {
+        ExerciseViewModel(get(), get(), get())
     }
 
 }

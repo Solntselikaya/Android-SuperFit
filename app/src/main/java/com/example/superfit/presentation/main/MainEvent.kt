@@ -8,7 +8,6 @@ sealed class MainEvent {
     class OnSeeAllExercisesClick(val navController: NavController) : MainEvent()
     class OnExerciseCardClick(
         val exercise: TrainingType,
-        val count: Int,
         val navController: NavController
     ) : MainEvent()
     class OnSignOutClick(val navController: NavController) : MainEvent()

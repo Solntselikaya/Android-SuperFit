@@ -24,7 +24,7 @@ class MainViewModel(
 ): ViewModel() {
 
     private val _state: MutableState<MainState> =
-        mutableStateOf(MainState.Loading)
+        mutableStateOf(MainState.Initial)
     var state: State<MainState> = _state
 
     private val _error: MutableState<List<Int>> =
@@ -35,7 +35,8 @@ class MainViewModel(
         _error.value = emptyList()
     }
 
-    init {
+    fun initialize() {
+        _state.value = MainState.Loading
         viewModelScope.launch {
             try {
                 var myWeight: Int? = null
@@ -72,27 +73,22 @@ class MainViewModel(
         if (exercisesList.isNotEmpty() && exercisesList.size < 2) {
             when (exercisesList[0].exercise) {
                 TrainingType.PUSH_UP -> {
-                    lastExercises.add(0,
-                        Pair(exercisesList[0].exercise, exercisesList[0].repeatCount)
-                    )
+                    lastExercises[0] = Pair(exercisesList[0].exercise, exercisesList[0].repeatCount)
                 }
                 else -> {
-                    lastExercises.add(1,
-                        Pair(exercisesList[0].exercise, exercisesList[0].repeatCount)
-                    )
+                    lastExercises[1] = Pair(exercisesList[0].exercise, exercisesList[0].repeatCount)
                 }
             }
 
         } else if (exercisesList.isNotEmpty()) {
-            val lastIndex = exercisesList.lastIndex
-            lastExercises.add(
-                0,
-                Pair(exercisesList.last().exercise, exercisesList.last().repeatCount )
-            )
-            lastExercises.add(
-                1,
-                Pair(exercisesList[lastIndex - 1].exercise, exercisesList[lastIndex - 1].repeatCount)
-            )
+            lastExercises[0] = Pair(exercisesList.last().exercise, exercisesList.last().repeatCount )
+
+            for(exercise in exercisesList) {
+                if (exercise.exercise != exercisesList.last().exercise) {
+                    lastExercises[1] = Pair(exercise.exercise, exercise.repeatCount)
+                    break
+                }
+            }
         }
 
         return lastExercises
@@ -102,7 +98,7 @@ class MainViewModel(
         when(event) {
             is OnMyBodyClick          -> navigateToMyBodyScreen(event.navController)
             is OnSeeAllExercisesClick -> navigateToExercisesScreen(event.navController)
-            is OnExerciseCardClick    -> navigateToExercise(event.navController, event.exercise, event.count)
+            is OnExerciseCardClick    -> navigateToExercise(event.navController, event.exercise)
             is OnSignOutClick         -> signOut(event.navController)
         }
     }
@@ -117,11 +113,10 @@ class MainViewModel(
 
     private fun navigateToExercise(
         navController: NavController,
-        exercise: TrainingType,
-        repeats: Int,
+        exercise: TrainingType
     ) {
         navController.navigate(
-            Screen.ExerciseScreen.passExerciseInfo(exercise.name, repeats)
+            Screen.ExerciseScreen.passExerciseInfo(exercise.name)
         )
     }
 

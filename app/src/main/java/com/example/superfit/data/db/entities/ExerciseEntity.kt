@@ -14,7 +14,7 @@ data class ExerciseEntity(
     @ColumnInfo(name = "user_email")
     val userEmail: String,
     @ColumnInfo(name = "exercise_type")
-    val exerciseType: TrainingType,
+    val exerciseType: String,
     @ColumnInfo(name = "count")
     val count: Int
 )
@@ -25,7 +25,7 @@ fun ExerciseEntity.toTrainingModel(): TrainingModel {
 
     return TrainingModel(
         date = current,
-        exercise = exerciseType,
+        exercise = TrainingType.valueOf(exerciseType),
         repeatCount = count
     )
 }

@@ -16,7 +16,7 @@ import com.example.superfit.presentation.common.ExerciseCard
 
 @Composable
 fun ExercisesList(
-    onClick: () -> Unit
+    onClick: (TrainingType) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -30,7 +30,7 @@ fun ExercisesList(
                 image = painterResource(it.image),
                 name = stringResource(it.title),
                 description = stringResource(it.description)
-            ) { onClick() }
+            ) { onClick(it) }
         }
     }
 }

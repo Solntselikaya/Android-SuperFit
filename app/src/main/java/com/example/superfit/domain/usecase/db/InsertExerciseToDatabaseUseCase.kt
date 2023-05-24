@@ -11,7 +11,7 @@ class InsertExerciseToDatabaseUseCase(
 ) {
     suspend operator fun invoke(
         userEmail: String,
-        exerciseType: TrainingType,
+        exerciseType: String,
         repeatCount: Int
     ) = withContext(Dispatchers.IO) {
         dao.insert(

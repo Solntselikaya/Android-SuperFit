@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.superfit.domain.usecase.db.GetAllFromDatabaseUseCase
 import com.example.superfit.domain.usecase.storage.credentials.GetUserEmailFromLocalStorageUseCase
 import com.example.superfit.domain.usecase.validation.CheckUserNameUseCase
 import com.example.superfit.navigation.Screen

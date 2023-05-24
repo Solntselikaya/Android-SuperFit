@@ -25,7 +25,7 @@ import com.example.superfit.presentation.common.TopImage
 import com.example.superfit.presentation.common.extensions.constrainSize
 import com.example.superfit.presentation.common.extensions.onMeasureConstraints
 import com.example.superfit.presentation.main.MainEvent.*
-import com.example.superfit.presentation.main.MainState.Content
+import com.example.superfit.presentation.main.MainState.*
 import com.example.superfit.presentation.main.MainState.Loading
 import com.example.superfit.presentation.main.components.MyBodyCard
 import com.example.superfit.presentation.ui.theme.Black
@@ -34,8 +34,11 @@ import com.example.superfit.presentation.ui.theme.White
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun MainScreen(navController: NavController) {
-    val viewModel = getViewModel<MainViewModel>()
+fun MainScreen(
+    navController: NavController,
+    viewModel: MainViewModel = getViewModel()
+) {
+    //val viewModel = getViewModel<MainViewModel>()
 
     val state: MainState by remember { viewModel.state }
 
@@ -50,8 +53,11 @@ fun MainScreen(navController: NavController) {
         TopImage(false) {}
 
         when (state) {
+            Initial    -> { viewModel.initialize() }
             Loading    -> LoadingBar(
-                Modifier.constrainSize { constraints }.navigationBarsPadding(),
+                Modifier
+                    .constrainSize { constraints }
+                    .navigationBarsPadding(),
                 Black
             )
             is Content -> MainScreenContent(
@@ -119,7 +125,7 @@ fun MainScreenContent(
             name = stringResource(exercise.first.title),
             description = stringResource(exercise.first.description)
         ) { viewModel.accept(
-            OnExerciseCardClick(exercise.first, exercise.second, navController)
+            OnExerciseCardClick(exercise.first, navController)
         ) }
     }
 
@@ -128,7 +134,7 @@ fun MainScreenContent(
     TextButton(
         onClick = { viewModel.accept(OnSignOutClick(navController)) },
         modifier = Modifier
-            .padding(start = 16.dp)
+            .padding(start = 16.dp, top = 16.dp)
             .navigationBarsPadding()
     ) {
         Icon(

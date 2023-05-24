@@ -12,7 +12,7 @@ class IncreaseExerciseCountUseCase(
     private val getExerciseRepeatCountFromDatabaseUseCase: GetExerciseRepeatCountFromDatabaseUseCase,
     private val updateExerciseInDatabaseUseCase: UpdateExerciseInDatabaseUseCase
 ) {
-    suspend operator fun invoke(exercise: TrainingType) =
+    suspend operator fun invoke(exercise: String) =
         withContext(Dispatchers.IO) {
             val userEmail = getUserEmailFromLocalStorageUseCase.execute()
             val currCount = getExerciseRepeatCountFromDatabaseUseCase(
@@ -20,7 +20,7 @@ class IncreaseExerciseCountUseCase(
                 exercise
             )
 
-            val newCount = when (exercise) {
+            val newCount = when (TrainingType.valueOf(exercise)) {
                 TrainingType.RUNNING -> currCount + 100
                 else                 -> currCount + 5
             }

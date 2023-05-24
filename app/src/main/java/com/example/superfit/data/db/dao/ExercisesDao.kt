@@ -12,7 +12,7 @@ interface ExercisesDao {
     suspend fun insert(exercise: ExerciseEntity)
 
     @Query("SELECT count FROM $DATABASE_NAME WHERE user_email = :userEmail AND exercise_type = :exerciseType")
-    suspend fun getExerciseRepeatCount(userEmail: String, exerciseType: TrainingType): Int
+    suspend fun getExerciseRepeatCount(userEmail: String, exerciseType: String): List<Int>
 
     @Update
     suspend fun update(exercise: ExerciseEntity)
