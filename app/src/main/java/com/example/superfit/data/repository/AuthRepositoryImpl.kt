@@ -1,13 +1,17 @@
 package com.example.superfit.data.repository
 
 import com.example.superfit.data.api.AuthApi
-import com.example.superfit.data.dto.*
+import com.example.superfit.data.dto.AccessTokenDto
+import com.example.superfit.data.dto.AuthCredentialsDto
+import com.example.superfit.data.dto.AuthResponseDto
+import com.example.superfit.data.dto.RefreshTokenDto
+import com.example.superfit.data.dto.RegistrationDto
 import com.example.superfit.domain.repository.AuthRepository
 import retrofit2.Response
 
 class AuthRepositoryImpl(
     private val api: AuthApi
-): AuthRepository {
+) : AuthRepository {
 
     override suspend fun login(body: AuthCredentialsDto): AuthResponseDto {
         return api.login(body)

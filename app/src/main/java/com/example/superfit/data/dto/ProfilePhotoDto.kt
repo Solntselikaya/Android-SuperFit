@@ -4,8 +4,11 @@ import com.example.superfit.domain.model.ProfilePhotoModel
 
 data class ProfilePhotoDto(
     val id: String,
-    val uploaded: Int
+    val uploaded: Long
 )
 
 fun ProfilePhotoDto.toProfilePhotoModel(): ProfilePhotoModel =
-    ProfilePhotoModel(id = id)
+    ProfilePhotoModel(
+        date = uploaded,
+        id = id
+    )

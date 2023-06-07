@@ -3,7 +3,7 @@ package com.example.superfit.domain.model
 import com.example.superfit.data.dto.AuthResponseDto
 
 data class AuthResponseModel(
-    val expired: Int,
+    val expired: Long,
     val refresh_token: String,
     val username: String
 )

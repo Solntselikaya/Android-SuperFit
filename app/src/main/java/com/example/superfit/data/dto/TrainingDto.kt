@@ -1,7 +1,7 @@
 package com.example.superfit.data.dto
 
+import com.example.superfit.common.TrainingType
 import com.example.superfit.domain.model.TrainingModel
-import com.example.superfit.domain.model.TrainingType
 
 data class TrainingDto(
     val date: String,

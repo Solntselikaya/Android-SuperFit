@@ -4,6 +4,7 @@ import com.example.superfit.data.dto.BodyParametersDto
 import com.example.superfit.data.dto.ProfileInfoDto
 import com.example.superfit.data.dto.ProfilePhotoDto
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 
 interface ProfileRepository {
@@ -18,7 +19,7 @@ interface ProfileRepository {
 
     suspend fun uploadPhoto(image: MultipartBody.Part): ProfilePhotoDto
 
-    suspend fun getPhotoById(id: String): String
+    suspend fun getPhotoById(id: String): ResponseBody
 
     suspend fun deletePhotoById(id: String): Response<Void>
 

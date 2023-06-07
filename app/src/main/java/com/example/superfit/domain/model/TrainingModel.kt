@@ -1,5 +1,6 @@
 package com.example.superfit.domain.model
 
+import com.example.superfit.common.TrainingType
 import com.example.superfit.data.dto.TrainingDto
 
 data class TrainingModel(

@@ -5,9 +5,9 @@
 
     <item
         android:drawable="@drawable/superfit"
+        android:end="38dp"
         android:gravity="top"
-        android:top="115dp"
         android:start="38dp"
-        android:end="38dp" />
+        android:top="115dp" />
 
 </layer-list>

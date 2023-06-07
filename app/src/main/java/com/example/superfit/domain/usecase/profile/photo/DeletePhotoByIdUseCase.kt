@@ -12,4 +12,4 @@ class DeletePhotoByIdUseCase(
         withContext(Dispatchers.IO) {
             repository.deletePhotoById(id)
         }
-    }
+}

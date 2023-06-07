@@ -6,7 +6,7 @@ import com.example.superfit.domain.repository.TrainingRepository
 
 class TrainingRepositoryImpl(
     private val api: TrainingApi
-): TrainingRepository {
+) : TrainingRepository {
 
     override suspend fun get(): List<TrainingDto> {
         return api.get()

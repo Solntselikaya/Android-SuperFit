@@ -6,11 +6,12 @@ import com.example.superfit.data.dto.ProfileInfoDto
 import com.example.superfit.data.dto.ProfilePhotoDto
 import com.example.superfit.domain.repository.ProfileRepository
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 
 class ProfileRepositoryImpl(
     private val api: ProfileApi
-): ProfileRepository {
+) : ProfileRepository {
 
     override suspend fun getProfileInfo(): ProfileInfoDto {
         return api.getProfileInfo()
@@ -32,7 +33,7 @@ class ProfileRepositoryImpl(
         return api.uploadPhoto(image)
     }
 
-    override suspend fun getPhotoById(id: String): String {
+    override suspend fun getPhotoById(id: String): ResponseBody {
         return api.getPhotoById(id)
     }
 

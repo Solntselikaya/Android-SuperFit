@@ -46,6 +46,12 @@ val Typography = Typography(
         fontSize = 16.sp,
         color = White
     ),
+    body2 = TextStyle(
+        fontFamily = Montserrat,
+        fontWeight = FontWeight.Medium,
+        fontSize = 20.sp,
+        color = White
+    ),
     subtitle1 = TextStyle(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Normal,
@@ -62,6 +68,12 @@ val Typography = Typography(
         fontFamily = Montserrat,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
+        color = LightGray
+    ),
+    button = TextStyle(
+        fontFamily = Montserrat,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
         color = LightGray
     )
 )

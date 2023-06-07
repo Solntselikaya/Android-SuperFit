@@ -2,7 +2,11 @@ package com.example.superfit.presentation.authorization.pin
 
 import android.os.Bundle
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -14,23 +18,48 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.superfit.R
-import com.example.superfit.navigation.USER_NAME
+import com.example.superfit.common.Constants.USER_NAME
+import com.example.superfit.presentation.authorization.pin.PINEvent.InputPINProcess
+import com.example.superfit.presentation.authorization.pin.PINEvent.OnDialogDismiss
+import com.example.superfit.presentation.authorization.pin.PINState.InputPIN
+import com.example.superfit.presentation.authorization.pin.PINState.Loading
 import com.example.superfit.presentation.authorization.pin.components.PINButtons
-import com.example.superfit.presentation.common.AppTitle
+import com.example.superfit.presentation.common.components.AppTitle
+import com.example.superfit.presentation.common.components.ErrorDialog
+import com.example.superfit.presentation.common.components.LoadingBar
 import com.example.superfit.presentation.ui.theme.White
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun PINScreen(
     userName: Bundle,
-    navController: NavController,
-    viewModel: PINViewModel = viewModel()
+    navController: NavController
 ) {
+    val viewModel = getViewModel<PINViewModel>()
 
     val name = userName.getString(USER_NAME).toString()
-    val numbers: List<Int> by remember { viewModel.numbers }
+    val state: PINState by remember { viewModel.state }
+    val numbers: List<Int> by remember { viewModel.numbers } //в стейт!
+    val error: List<Int> by remember { viewModel.error }
+
+    ErrorDialog(error = error) { viewModel.accept(OnDialogDismiss) }
+
+    when (state) {
+        is InputPIN -> PINScreenContent(navController, name, numbers, viewModel)
+        is Loading -> LoadingBar(Modifier.fillMaxSize())
+    }
+
+}
+
+@Composable
+fun PINScreenContent(
+    navController: NavController,
+    name: String,
+    numbers: List<Int>,
+    viewModel: PINViewModel
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -65,7 +94,7 @@ fun PINScreen(
 
             PINButtons(
                 numbers
-            ) { viewModel.accept(PINEvent.InputPIN(navController, name, it)) }
+            ) { viewModel.accept(InputPINProcess(navController, name, it)) }
         }
     }
 }

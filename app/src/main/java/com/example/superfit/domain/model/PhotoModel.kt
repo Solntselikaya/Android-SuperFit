@@ -1,5 +1,8 @@
 package com.example.superfit.domain.model
 
+import okhttp3.ResponseBody
+
 data class PhotoModel(
-    val photo: String
+    val date: Long,
+    val photo: ResponseBody
 )

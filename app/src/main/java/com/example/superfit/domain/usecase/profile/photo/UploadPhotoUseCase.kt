@@ -11,8 +11,8 @@ class UploadPhotoUseCase(
     private val repository: ProfileRepository
 ) {
     suspend operator fun invoke(photo: ByteArray) {
-        val body = photo.toRequestBody("image/png".toMediaType(), 0, photo.size)
-        val part = MultipartBody.Part.createFormData("file", "image.png", body)
+        val body = photo.toRequestBody("image/*".toMediaType(), 0, photo.size)
+        val part = MultipartBody.Part.createFormData("file", "image", body)
 
         withContext(Dispatchers.IO) {
             repository.uploadPhoto(part)

@@ -4,18 +4,22 @@ import com.example.superfit.data.dto.BodyParametersDto
 import com.example.superfit.domain.repository.ProfileRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class UpdateBodyParametersUseCase(
     private val repository: ProfileRepository
 ) {
     suspend operator fun invoke(
-        date: String,
-        height: Int,
-        weight: Int
+        height: Int?,
+        weight: Int?
     ) {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val date = LocalDate.now().format(formatter)
+
         withContext(Dispatchers.IO) {
             repository.updateBodyParameters(
-                BodyParametersDto(date, height, weight)
+                BodyParametersDto(date, height ?: 10, weight ?: 10)
             )
         }
     }

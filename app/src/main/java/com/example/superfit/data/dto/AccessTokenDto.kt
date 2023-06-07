@@ -4,7 +4,7 @@ import com.example.superfit.domain.model.AccessTokenModel
 
 data class AccessTokenDto(
     val access_token: String,
-    val expired: Int
+    val expired: Long
 )
 
 fun AccessTokenDto.toAccessTokenModel(): AccessTokenModel =

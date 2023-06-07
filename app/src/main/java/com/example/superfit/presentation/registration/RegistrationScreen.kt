@@ -1,7 +1,15 @@
 package com.example.superfit.presentation.registration
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -11,43 +19,53 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.superfit.R
 import com.example.superfit.navigation.Screen
-import com.example.superfit.presentation.common.AppTitle
-import com.example.superfit.presentation.registration.RegistrationEvent.*
+import com.example.superfit.presentation.common.components.AppTitle
+import com.example.superfit.presentation.common.components.ErrorDialog
+import com.example.superfit.presentation.common.components.LoadingBar
+import com.example.superfit.presentation.registration.RegistrationEvent.InputInfoProcess
+import com.example.superfit.presentation.registration.RegistrationEvent.OnDialogDismiss
+import com.example.superfit.presentation.registration.RegistrationEvent.SignUpButtonClick
+import com.example.superfit.presentation.registration.RegistrationState.InputInfo
+import com.example.superfit.presentation.registration.RegistrationState.Loading
 import com.example.superfit.presentation.registration.components.InputFields
-import com.example.superfit.presentation.ui.theme.Black
 import com.example.superfit.presentation.ui.theme.White
+import org.koin.androidx.compose.getViewModel
+
+/*
+* NavController нельзя передавать, это анлроид штука как контекст*/
+
 
 @Composable
 fun RegistrationScreen(
-    navController: NavController,
-    viewModel: RegistrationViewModel = viewModel()
+    navController: NavController
 ) {
-    val state: RegistrationState by remember {viewModel.state }
-    val error: List<Int> by remember { viewModel.errorMessage }
+    val viewModel = getViewModel<RegistrationViewModel>()
 
-    if (error.isNotEmpty()) {
-        
-        AlertDialog(
-            onDismissRequest = { viewModel.accept(OnDialogDismiss) },
-            title = { Text(text = "Ошибка") },
-            text = {
-                var errorStr = ""
-                for (element in error) {
-                    errorStr += stringResource(element)
-                    errorStr += "\n"
-                }
-                
-                Text(text = errorStr, color = Black)
-            },
-            buttons = {}
-        )
+    val state: RegistrationState by remember { viewModel.state }
+    val error: List<Int> by remember { viewModel.error }
+
+    ErrorDialog(error = error) { viewModel.accept(OnDialogDismiss) }
+
+    when (state) {
+        Loading -> {
+            LoadingBar(Modifier.fillMaxSize())
+        }
+
+        is InputInfo -> {
+            RegistrationScreenContent(navController, state, viewModel)
+        }
     }
+}
 
-
+@Composable
+fun RegistrationScreenContent(
+    navController: NavController,
+    state: RegistrationState,
+    viewModel: RegistrationViewModel
+) {
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -57,11 +75,11 @@ fun RegistrationScreen(
         AppTitle()
 
         InputFields(
-            userName = (state as RegistrationState.InputInfo).data.userName ?: "",
-            email = (state as RegistrationState.InputInfo).data.email ?: "",
-            code = (state as RegistrationState.InputInfo).data.code ?: "",
-            repeatCode = (state as RegistrationState.InputInfo).data.repeatCode ?: "",
-            { viewModel.accept(InputInfo(it)) },
+            userName = (state as InputInfo).data.userName ?: "",
+            email = state.data.email ?: "",
+            code = state.data.code ?: "",
+            repeatCode = state.data.repeatCode ?: "",
+            { viewModel.accept(InputInfoProcess(it)) },
             { viewModel.accept(SignUpButtonClick(navController)) }
         )
 
@@ -70,7 +88,7 @@ fun RegistrationScreen(
                 navController.popBackStack(Screen.AuthorizationScreen.route, false)
             },
             modifier = Modifier
-                .navigationBarsPadding()
+                .padding(bottom = 56.dp)
                 .wrapContentSize(),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Transparent,
